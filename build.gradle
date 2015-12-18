@@ -4,6 +4,7 @@ buildscript {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
     dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.0-beta-3595"
     }
 }
 
@@ -43,7 +44,7 @@ project(":desktop") {
 }
 
 project(":core") {
-    apply plugin: "java"
+    apply plugin: "kotlin"
 
 
     dependencies {
@@ -54,6 +55,7 @@ project(":core") {
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         compile "net.dermetfan.libgdx-utils:libgdx-utils:0.13.2"
         compile "net.dermetfan.libgdx-utils:libgdx-utils-box2d:0.13.2"
+        compile "org.jetbrains.kotlin:kotlin-stdlib:1.0.0-beta-3595"
     }
 }
 
