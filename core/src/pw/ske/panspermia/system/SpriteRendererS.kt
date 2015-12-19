@@ -10,7 +10,7 @@ import pw.ske.panspermia.component.BodyC
 import pw.ske.panspermia.component.SpriteC
 import pw.ske.panspermia.position
 
-object SpriteRendererS: IteratingSystem(Family.all(BodyC::class.java, SpriteC::class.java).get()) {
+object SpriteRendererS: IteratingSystem(Family.all(BodyC::class.java, SpriteC::class.java).get(), 1000) {
     override fun update(deltaTime: Float) {
         Play.batch.begin()
         super.update(deltaTime)

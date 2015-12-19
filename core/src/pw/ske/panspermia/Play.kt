@@ -6,39 +6,44 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.World
-import pw.ske.panspermia.system.ShipFlyS
+import pw.ske.panspermia.gen.LevelGenerator
+import pw.ske.panspermia.system.MapRendererS
+import pw.ske.panspermia.system.PlayerCameraS
+import pw.ske.panspermia.system.PlayerMovementS
 import pw.ske.panspermia.system.SpriteRendererS
 
-object Play: ScreenAdapter() {
+object Play : ScreenAdapter() {
     val engine = Engine().apply {
-        addSystem(ShipFlyS)
+        addSystem(MapRendererS)
+        addSystem(PlayerCameraS)
+        addSystem(PlayerMovementS)
         addSystem(SpriteRendererS)
     }
     val world = World(Vector2(), true)
     val batch = SpriteBatch()
+    val shapeRenderer = ShapeRenderer()
 
     val camera = OrthographicCamera()
 
+    val map = LevelGenerator.genMap(100, 100).apply {
+        placeWorld()
+    }
+
     val player = EntityCreator.createPlayer().apply {
+        position = Vector2(map.start.x.toFloat(), map.start.y.toFloat())
         engine.addEntity(this)
     }
 
     init {
-        (0..100).forEach {
-            val planet = EntityCreator.createPlanet()
-            planet.position = Vector2(Math.random().toFloat() * 50f, Math.random().toFloat() * 50f)
 
-            engine.addEntity(planet)
-        }
     }
 
     override fun render(delta: Float) {
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
+        Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-
-        batch.projectionMatrix = camera.combined
 
         world.step(delta, 5, 5)
         engine.update(delta)
