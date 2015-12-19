@@ -25,6 +25,15 @@ object Play: ScreenAdapter() {
         engine.addEntity(this)
     }
 
+    init {
+        (0..100).forEach {
+            val planet = EntityCreator.createPlanet()
+            planet.position = Vector2(Math.random().toFloat() * 50f, Math.random().toFloat() * 50f)
+
+            engine.addEntity(planet)
+        }
+    }
+
     override fun render(delta: Float) {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
