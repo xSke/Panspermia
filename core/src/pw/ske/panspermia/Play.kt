@@ -14,6 +14,8 @@ import pw.ske.panspermia.system.*
 
 object Play : ScreenAdapter() {
     val engine = Engine().apply {
+        addSystem(AttackMiniSpermS)
+        addSystem(AttackOnClickS)
         addSystem(AttackPeriodicallyS)
         addSystem(MapRendererS)
         addSystem(PlayAnimationOnPreAttackS)
