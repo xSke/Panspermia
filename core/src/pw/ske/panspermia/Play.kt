@@ -30,6 +30,7 @@ object Play : ScreenAdapter() {
 
     val map = LevelGenerator.genMap(100, 100).apply {
         placeWorld()
+        placeEntities()
     }
 
     val player = EntityCreator.createPlayer().apply {

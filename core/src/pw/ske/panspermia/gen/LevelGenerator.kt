@@ -86,8 +86,6 @@ object LevelGenerator {
             }
         }
 
-        println(startPointsWithMost)
-
         val visited2 = map.clone().map { it.clone() }
         fun flood(xx: Int, yy: Int) {
             visited2[xx][yy] = true

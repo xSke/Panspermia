@@ -2,19 +2,13 @@ package pw.ske.panspermia.system
 
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import pw.ske.panspermia.Play
 
 object MapRendererS : EntitySystem(999) {
-    val texts = TextureRegion.split(Texture("walls.png"), 16, 16)
-
     override fun update(deltaTime: Float) {
         Play.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
 
-        //Play.batch.color = Color(0x00FF00FF.toInt())
-        //Play.shapeRenderer.color = Color(0x1AB03DFF.toInt())
         Play.map.map.forEachIndexed { x, xr ->
             xr.forEachIndexed { y, v ->
                 fun n(dx: Int, dy: Int): Boolean {
