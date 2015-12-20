@@ -62,7 +62,7 @@ object Play : ScreenAdapter() {
     }
 
     override fun render(delta: Float) {
-        Gdx.gl.glClearColor(238 / 255f, 41 / 255f, 41 / 255f, 1f)
+        Gdx.gl.glClearColor(41 / 255f, 140 / 255f, 238 / 255f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         engine.update(delta)

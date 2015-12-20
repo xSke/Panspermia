@@ -32,8 +32,8 @@ object MapRendererS : EntitySystem(999) {
                     val sw = !n(-1, -1)
                     val se = !n(1, -1);
 
-                    val inc = Color(0xEE2929FF.toInt())
-                    val outc = Color(0xDE1111FF.toInt())
+                    val inc = Color(0x298CEEFF.toInt())
+                    val outc = Color(0x1178DEFF.toInt())
 
                     var vtx1 = inc
                     var vtx2 = inc
