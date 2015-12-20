@@ -6,4 +6,5 @@ object Events {
     val PreAttack = Signal<PreAttackE>()
     val Attack = Signal<AttackE>()
     val EntityTouchFixture = Signal<EntityTouchFixtureE>()
+    val Damage = Signal<DamageE>()
 }

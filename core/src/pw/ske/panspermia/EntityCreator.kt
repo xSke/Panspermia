@@ -17,8 +17,10 @@ object EntityCreator {
     val PLAYER_MASK = 0b1
     val PLAYER_SENSOR_MASK = 0b101
 
-    val PROJECTILE_CAT = 0b100
-    val PROJECTILE_MASK = 0b011;
+    val SPERM_PROJECTILE_CAT = 0b100
+    val SPERM_PROJECTILE_MASK = 0b1011;
+    val BULLET_PROJECTILE_CAT = 0b1000
+    val BULLET_PROJECTILE_MASK = 0b111;
     fun createPlayer(): Entity {
         val body = Play.world.createBody(BodyDef())
         body.type = BodyDef.BodyType.DynamicBody
@@ -92,9 +94,10 @@ object EntityCreator {
         shape.radius = 0.2f
 
         val fix = body.createFixture(shape, 1f)
+        fix.isSensor = true
         val filter = Filter()
-        filter.categoryBits = PROJECTILE_CAT.toShort()
-        filter.maskBits = PROJECTILE_MASK.toShort()
+        filter.categoryBits = SPERM_PROJECTILE_CAT.toShort()
+        filter.maskBits = SPERM_PROJECTILE_MASK.toShort()
         fix.filterData = filter
 
         val entity = Entity()
@@ -102,6 +105,7 @@ object EntityCreator {
         entity.add(BodyC(body))
         entity.add(SpriteC(sprite))
         entity.add(DestroyOnTouchC())
+        entity.add(DamageOnTouchC(5f))
         return entity
     }
 
@@ -117,9 +121,10 @@ object EntityCreator {
         shape.radius = 0.125f
 
         val fix = body.createFixture(shape, 1f)
+        fix.isSensor = true
         val filter = Filter()
-        filter.categoryBits = PROJECTILE_CAT.toShort()
-        filter.maskBits = PROJECTILE_MASK.toShort()
+        filter.categoryBits = BULLET_PROJECTILE_CAT.toShort()
+        filter.maskBits = BULLET_PROJECTILE_MASK.toShort()
         fix.filterData = filter
 
         val entity = Entity()
@@ -127,6 +132,7 @@ object EntityCreator {
         entity.add(BodyC(body))
         entity.add(SpriteC(sprite))
         entity.add(DestroyOnTouchC())
+        entity.add(HealthC(1f))
         return entity
     }
 
