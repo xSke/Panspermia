@@ -7,7 +7,7 @@ import pw.ske.panspermia.EntityCreator
 import pw.ske.panspermia.Play
 import pw.ske.panspermia.position
 
-object RandomSpawnCellS: IntervalSystem(1f) {
+object RandomSpawnCellS: IntervalSystem(4f) {
     override fun updateInterval() {
         val cell = EntityCreator.createCell()
 

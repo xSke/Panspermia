@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.World
 import pw.ske.panspermia.component.BodyC
 import pw.ske.panspermia.gen.LevelGenerator
 import pw.ske.panspermia.system.*
+import pw.ske.panspermia.ui.HUDUI
 
 object Play : ScreenAdapter() {
     val engine = Engine().apply {
@@ -71,10 +72,15 @@ object Play : ScreenAdapter() {
 
         engine.update(delta)
 
+        HUDUI.act(delta)
+        HUDUI.draw()
+
         //Box2DDebugRenderer().render(world, camera.combined)
     }
 
     override fun resize(width: Int, height: Int) {
         camera.setToOrtho(false, width / 64f, height / 64f)
+
+        HUDUI.viewport.update(width, height, true)
     }
 }
