@@ -42,7 +42,7 @@ object Play : ScreenAdapter() {
     }
 
     override fun render(delta: Float) {
-        Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1f)
+        Gdx.gl.glClearColor(255 / 255f, 45 / 255f, 45 / 255f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         world.step(delta, 5, 5)
