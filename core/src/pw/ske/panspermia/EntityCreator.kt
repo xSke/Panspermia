@@ -18,9 +18,12 @@ object EntityCreator {
     val PLAYER_SENSOR_MASK = 0b1101
 
     val SPERM_PROJECTILE_CAT = 0b100
-    val SPERM_PROJECTILE_MASK = 0b1011;
+    val SPERM_PROJECTILE_MASK = 0b1011
     val BULLET_PROJECTILE_CAT = 0b1000
-    val BULLET_PROJECTILE_MASK = 0b111;
+    val BULLET_PROJECTILE_MASK = 0b111
+
+    val CELL_CAT = 0b10000
+    val CELL_MASK = 0b00101
     fun createPlayer(): Entity {
         val body = Play.world.createBody(BodyDef())
         body.type = BodyDef.BodyType.DynamicBody
@@ -156,7 +159,43 @@ object EntityCreator {
         entity.add(SpriteC(sprite))
         entity.add(AttackPeriodicallyC(1f, 0.15f, Math.random().toFloat() * 1f))
         entity.add(PlayAnimationOnPreAttackC())
-        entity.add(AttackShootProjectileC(10f, Vector2(0f, 0.5f)))
+        entity.add(AttackShootProjectileC(10f, listOf(Vector2(0f, 0.5f)), true))
+        return entity
+    }
+
+    fun createCell(): Entity {
+        val body = Play.world.createBody(BodyDef())
+        body.type = BodyDef.BodyType.DynamicBody
+        body.angularVelocity = Math.random().toFloat() * 2 - 1
+        body.linearDamping = 1f
+
+        val anim = Animation(0.15f, *TextureRegion.split(Texture("cell.png"), 32, 32)[0])
+        anim.playMode = Animation.PlayMode.NORMAL
+
+        val sprite = AnimatedSprite(anim)
+        sprite.time = Math.random().toFloat()
+        sprite.setSize(2f, 2f)
+        sprite.setOriginCenter()
+
+        val shape = CircleShape()
+        shape.radius = 1f
+
+        val fix = body.createFixture(shape, 1f)
+        val filter = Filter()
+        filter.categoryBits = CELL_CAT.toShort()
+        filter.maskBits = CELL_MASK.toShort()
+        fix.filterData = filter
+
+        val offset = Math.random().toFloat() * 1f
+
+        val entity = Entity()
+        body.userData = entity
+        entity.add(BodyC(body))
+        entity.add(SpriteC(sprite))
+        entity.add(AttackPeriodicallyC(1f, 0.15f, offset))
+        entity.add(PlayAnimationOnPreAttackC())
+        entity.add(AttackShootProjectileC(10f, listOf(Vector2(0f, 1f), Vector2(0f, -1f), Vector2(1f, 0f), Vector2(-1f, 0f)), false))
+        entity.add(DashTowardsPlayerC(10f, 1f, offset))
         return entity
     }
 }

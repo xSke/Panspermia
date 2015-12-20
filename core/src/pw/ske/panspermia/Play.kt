@@ -24,6 +24,7 @@ object Play : ScreenAdapter() {
         addSystem(AttackShootProjectileS)
         addSystem(DamageOnTouchS)
         addSystem(DamageS)
+        addSystem(DashTowardsPlayerS)
         addSystem(DestroyOnTouchS)
         addSystem(KillOnHealthZeroS)
         addSystem(MapRendererS)
@@ -32,6 +33,7 @@ object Play : ScreenAdapter() {
         addSystem(PlayerCameraS)
         addSystem(PlayerMovementS)
         addSystem(PreAttackS)
+        addSystem(RandomSpawnCellS)
         addSystem(SpriteRendererS)
 
         addEntityListener(Family.all(BodyC::class.java).get(), object : EntityListener {
