@@ -3,7 +3,9 @@ package pw.ske.panspermia
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
+import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.CircleShape
 import com.badlogic.gdx.physics.box2d.Filter
@@ -43,7 +45,7 @@ object EntityCreator {
         entity.add(SpriteC(sprite))
         entity.add(PlayerMovementC(5f, 10f))
         entity.add(AttackOnClickC())
-        entity.add(AttackMiniSpermC(20f))
+        entity.add(AttackMiniSpermC(20f, Vector2(0f, 0.75f)))
         return entity
     }
 
@@ -66,7 +68,7 @@ object EntityCreator {
         return entity
     }
 
-    fun createProjectile(): Entity {
+    fun createMiniSperm(): Entity {
         val body = Play.world.createBody(BodyDef())
         body.type = BodyDef.BodyType.DynamicBody
 
@@ -79,6 +81,31 @@ object EntityCreator {
 
         val shape = CircleShape()
         shape.radius = 0.2f
+
+        val fix = body.createFixture(shape, 1f)
+        val filter = Filter()
+        filter.categoryBits = PROJECTILE_CAT.toShort()
+        filter.maskBits = PROJECTILE_MASK.toShort()
+        fix.filterData = filter
+
+        val entity = Entity()
+        body.userData = entity
+        entity.add(BodyC(body))
+        entity.add(SpriteC(sprite))
+        entity.add(DestroyOnTouchC())
+        return entity
+    }
+
+    fun createProjectile(): Entity {
+        val body = Play.world.createBody(BodyDef())
+        body.type = BodyDef.BodyType.DynamicBody
+
+        val sprite = Sprite(Texture("bullet.png"))
+        sprite.setSize(0.25f, 0.25f)
+        sprite.setOriginCenter()
+
+        val shape = CircleShape()
+        shape.radius = 0.125f
 
         val fix = body.createFixture(shape, 1f)
         val filter = Filter()
@@ -110,8 +137,9 @@ object EntityCreator {
         body.userData = entity
         entity.add(BodyC(body))
         entity.add(SpriteC(sprite))
-        entity.add(AttackPeriodicallyC(2f, 0.3f))
+        entity.add(AttackPeriodicallyC(2f, 0.15f))
         entity.add(PlayAnimationOnPreAttackC())
+        entity.add(AttackShootProjectileC(10f, Vector2(0f, 0.5f)))
         return entity
     }
 }

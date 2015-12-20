@@ -2,8 +2,10 @@ package pw.ske.panspermia.gen
 
 import com.badlogic.gdx.math.GridPoint2
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.EdgeShape
+import com.badlogic.gdx.physics.box2d.PolygonShape
 import pw.ske.panspermia.EntityCreator
 import pw.ske.panspermia.Play
 import pw.ske.panspermia.body
@@ -12,6 +14,7 @@ data class Map(val map: Array<Array<Boolean>>, val start: GridPoint2, val end: G
     fun placeWorld() {
         val body = Play.world.createBody(BodyDef())
         val shape = EdgeShape()
+        val box = PolygonShape()
 
         map.forEachIndexed { x, xr ->
             xr.forEachIndexed { y, v ->
@@ -28,9 +31,15 @@ data class Map(val map: Array<Array<Boolean>>, val start: GridPoint2, val end: G
                     c(x - 1, y, x, y + 1, x, y)
                     c(x, y + 1, x, y + 1, x + 1, y + 1)
                     c(x, y - 1, x, y, x + 1, y)
+
+                    box.setAsBox(0.45f, 0.45f, Vector2(x + 0.5f, y + 0.5f), 0f)
+                    val fix = body.createFixture(box, 0f)
                 }
             }
         }
+
+        shape.dispose()
+        box.dispose()
     }
 
     fun placeEntities() {

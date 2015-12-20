@@ -21,6 +21,7 @@ object Play : ScreenAdapter() {
         addSystem(AttackMiniSpermS)
         addSystem(AttackOnClickS)
         addSystem(AttackPeriodicallyS)
+        addSystem(AttackShootProjectileS)
         addSystem(DestroyOnTouchS)
         addSystem(MapRendererS)
         addSystem(PhysicsS)
@@ -62,6 +63,8 @@ object Play : ScreenAdapter() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         engine.update(delta)
+
+        //Box2DDebugRenderer().render(world, camera.combined)
     }
 
     override fun resize(width: Int, height: Int) {
