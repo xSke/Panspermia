@@ -16,8 +16,8 @@ object AttackMiniSpermS: EntitySystem() {
 
             if (ams != null) {
                 val sperm = EntityCreator.createProjectile()
-                sperm.position = attackE.entity.position
                 sperm.body.linearVelocity = Vector2(0f, ams.speed).rotateRad(attackE.entity.body.angle)
+                sperm.body.setTransform(attackE.entity.position, attackE.entity.body.angle)
 
                 Play.engine.addEntity(sperm)
             }

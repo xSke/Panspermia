@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.CircleShape
+import com.badlogic.gdx.physics.box2d.Filter
 import net.dermetfan.gdx.graphics.g2d.AnimatedSprite
 import pw.ske.panspermia.component.*
 
@@ -31,8 +32,13 @@ object EntityCreator {
         shape.radius = 0.49f
 
         val fix = body.createFixture(shape, 1f)
+        val filter = Filter()
+        filter.categoryBits = PLAYER_CAT.toShort()
+        filter.maskBits = PLAYER_MASK.toShort()
+        fix.filterData = filter
 
         val entity = Entity()
+        body.userData = entity
         entity.add(BodyC(body))
         entity.add(SpriteC(sprite))
         entity.add(PlayerMovementC(5f, 10f))
@@ -54,6 +60,7 @@ object EntityCreator {
         sprite.setOriginCenter()
 
         val entity = Entity()
+        body.userData = entity
         entity.add(BodyC(body))
         entity.add(SpriteC(sprite))
         return entity
@@ -74,10 +81,16 @@ object EntityCreator {
         shape.radius = 0.2f
 
         val fix = body.createFixture(shape, 1f)
+        val filter = Filter()
+        filter.categoryBits = PROJECTILE_CAT.toShort()
+        filter.maskBits = PROJECTILE_MASK.toShort()
+        fix.filterData = filter
 
         val entity = Entity()
+        body.userData = entity
         entity.add(BodyC(body))
         entity.add(SpriteC(sprite))
+        entity.add(DestroyOnTouchC())
         return entity
     }
 
@@ -94,6 +107,7 @@ object EntityCreator {
         sprite.setOriginCenter()
 
         val entity = Entity()
+        body.userData = entity
         entity.add(BodyC(body))
         entity.add(SpriteC(sprite))
         entity.add(AttackPeriodicallyC(2f, 0.3f))
