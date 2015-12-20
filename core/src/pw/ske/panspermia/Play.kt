@@ -10,16 +10,16 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.World
 import pw.ske.panspermia.gen.LevelGenerator
-import pw.ske.panspermia.system.MapRendererS
-import pw.ske.panspermia.system.PlayerCameraS
-import pw.ske.panspermia.system.PlayerMovementS
-import pw.ske.panspermia.system.SpriteRendererS
+import pw.ske.panspermia.system.*
 
 object Play : ScreenAdapter() {
     val engine = Engine().apply {
+        addSystem(AttackPeriodicallyS)
         addSystem(MapRendererS)
+        addSystem(PlayAnimationOnPreAttackS)
         addSystem(PlayerCameraS)
         addSystem(PlayerMovementS)
+        addSystem(PreAttackS)
         addSystem(SpriteRendererS)
     }
     val world = World(Vector2(), true)

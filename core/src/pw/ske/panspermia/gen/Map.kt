@@ -34,7 +34,7 @@ data class Map(val map: Array<Array<Boolean>>, val start: GridPoint2, val end: G
     }
 
     fun placeEntities() {
-        placeWeed()
+        placeWallObjects()
     }
 
     fun neighbors8(x: Int, y: Int): Int {
@@ -75,8 +75,8 @@ data class Map(val map: Array<Array<Boolean>>, val start: GridPoint2, val end: G
         return neighbors
     }
 
-    fun placeWeed() {
-        (0..50).map {
+    fun placeWallObjects() {
+        (0..100).map {
             val pos = GridPoint2()
             while (map[pos.x][pos.y] || neighbors4(pos.x, pos.y) != 1) {
                 pos.set((Math.random() * width).toInt(), (Math.random() * width).toInt())
@@ -91,11 +91,17 @@ data class Map(val map: Array<Array<Boolean>>, val start: GridPoint2, val end: G
                 else -> 0
             }
 
-            val weed = EntityCreator.createWeed()
-            weed.body.setTransform(it.x + 0.5f, it.y + 0.5f, direction * MathUtils.degreesToRadians)
+            if (Math.random() < 0.5) {
+                val weed = EntityCreator.createWeed()
+                weed.body.setTransform(it.x + 0.5f, it.y + 0.5f, direction * MathUtils.degreesToRadians)
 
-            Play.engine.addEntity(weed)
-            println(it)
+                Play.engine.addEntity(weed)
+            } else {
+                val cannon = EntityCreator.createCannon()
+                cannon.body.setTransform(it.x + 0.5f, it.y + 0.5f, direction * MathUtils.degreesToRadians)
+
+                Play.engine.addEntity(cannon)
+            }
         }
     }
 }

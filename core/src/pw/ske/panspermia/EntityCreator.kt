@@ -9,9 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.CircleShape
 import com.badlogic.gdx.physics.box2d.PolygonShape
 import net.dermetfan.gdx.graphics.g2d.AnimatedSprite
-import pw.ske.panspermia.component.BodyC
-import pw.ske.panspermia.component.PlayerMovementC
-import pw.ske.panspermia.component.SpriteC
+import pw.ske.panspermia.component.*
 
 object EntityCreator {
     fun createPlayer(): Entity {
@@ -42,18 +40,37 @@ object EntityCreator {
         val body = Play.world.createBody(BodyDef())
         body.type = BodyDef.BodyType.StaticBody
 
-        val sprite = Sprite(Texture("blazeit.png"))
+        val anim = Animation(0.5f, *TextureRegion.split(Texture("blazeit.png"), 16, 16)[0])
+        anim.playMode = Animation.PlayMode.LOOP
+
+        val sprite = AnimatedSprite(anim)
+        sprite.time = Math.random().toFloat()
         sprite.setSize(1f, 1f)
         sprite.setOriginCenter()
-
-        //val shape = CircleShape()
-        //shape.radius = 0.49f
-
-        //val fix = body.createFixture(shape, 1f)
 
         val entity = Entity()
         entity.add(BodyC(body))
         entity.add(SpriteC(sprite))
+        return entity
+    }
+
+    fun createCannon(): Entity {
+        val body = Play.world.createBody(BodyDef())
+        body.type = BodyDef.BodyType.StaticBody
+
+        val anim = Animation(0.1f, *TextureRegion.split(Texture("plop.png"), 16, 16)[0])
+        anim.playMode = Animation.PlayMode.NORMAL
+
+        val sprite = AnimatedSprite(anim)
+        sprite.time = Math.random().toFloat()
+        sprite.setSize(1f, 1f)
+        sprite.setOriginCenter()
+
+        val entity = Entity()
+        entity.add(BodyC(body))
+        entity.add(SpriteC(sprite))
+        entity.add(AttackPeriodicallyC(2f, 0.2f))
+        entity.add(PlayAnimationOnPreAttackC())
         return entity
     }
 }
