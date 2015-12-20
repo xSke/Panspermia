@@ -7,4 +7,5 @@ object Events {
     val Attack = Signal<AttackE>()
     val EntityTouchFixture = Signal<EntityTouchFixtureE>()
     val Damage = Signal<DamageE>()
+    val Death = Signal<DeathE>()
 }

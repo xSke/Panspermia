@@ -18,7 +18,7 @@ object EntityCreator {
     val PLAYER_SENSOR_MASK = 0b1101
 
     val SPERM_PROJECTILE_CAT = 0b100
-    val SPERM_PROJECTILE_MASK = 0b1011
+    val SPERM_PROJECTILE_MASK = 0b11011
     val BULLET_PROJECTILE_CAT = 0b1000
     val BULLET_PROJECTILE_MASK = 0b111
 
@@ -109,7 +109,7 @@ object EntityCreator {
         entity.add(BodyC(body))
         entity.add(SpriteC(sprite))
         entity.add(DestroyOnTouchC())
-        entity.add(DamageOnTouchC(5f))
+        entity.add(DamageOnTouchC(1f))
         return entity
     }
 
@@ -196,6 +196,8 @@ object EntityCreator {
         entity.add(PlayAnimationOnPreAttackC())
         entity.add(AttackShootProjectileC(10f, listOf(Vector2(0f, 1f), Vector2(0f, -1f), Vector2(1f, 0f), Vector2(-1f, 0f)), false))
         entity.add(DashTowardsPlayerC(10f, 1f, offset))
+        entity.add(HealthC(20f))
+        entity.add(BulletDeathC(15f, 100))
         return entity
     }
 }
