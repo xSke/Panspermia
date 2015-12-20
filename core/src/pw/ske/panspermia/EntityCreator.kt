@@ -15,9 +15,10 @@ import pw.ske.panspermia.component.*
 object EntityCreator {
     val PLAYER_CAT = 0b10
     val PLAYER_MASK = 0b1
+    val PLAYER_SENSOR_MASK = 0b101
 
     val PROJECTILE_CAT = 0b100
-    val PROJECTILE_MASK = 0b001;
+    val PROJECTILE_MASK = 0b011;
     fun createPlayer(): Entity {
         val body = Play.world.createBody(BodyDef())
         body.type = BodyDef.BodyType.DynamicBody
@@ -38,6 +39,14 @@ object EntityCreator {
         filter.categoryBits = PLAYER_CAT.toShort()
         filter.maskBits = PLAYER_MASK.toShort()
         fix.filterData = filter
+
+        shape.radius = 0.15f
+        shape.position = Vector2(0f, 0.3f)
+        val sensor = body.createFixture(shape, 1f)
+        val filter2 = Filter()
+        filter2.categoryBits = PLAYER_CAT.toShort()
+        filter2.maskBits = PLAYER_SENSOR_MASK.toShort()
+        sensor.filterData = filter2
 
         val entity = Entity()
         body.userData = entity
