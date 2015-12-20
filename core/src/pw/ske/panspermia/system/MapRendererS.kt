@@ -21,16 +21,16 @@ object MapRendererS : EntitySystem(999) {
                     }
                 }
 
-                if (n(0, 0)) {
-                    val w = n(-1, 0)
-                    val e = n(1, 0)
-                    val n = n(0, 1)
-                    val s = n(0, -1)
+                if (!n(0, 0)) {
+                    val w = !n(-1, 0)
+                    val e = !n(1, 0)
+                    val n = !n(0, 1)
+                    val s = !n(0, -1)
 
-                    val nw = n(-1, 1)
-                    val ne = n(1, 1)
-                    val sw = n(-1, -1)
-                    val se = n(1, -1);
+                    val nw = !n(-1, 1)
+                    val ne = !n(1, 1)
+                    val sw = !n(-1, -1)
+                    val se = !n(1, -1);
 
                     val inc = Color(0xEE2929FF.toInt())
                     val outc = Color(0xDE1111FF.toInt())

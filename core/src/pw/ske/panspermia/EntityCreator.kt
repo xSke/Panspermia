@@ -14,8 +14,8 @@ import pw.ske.panspermia.component.*
 
 object EntityCreator {
     val PLAYER_CAT = 0b10
-    val PLAYER_MASK = 0b1
-    val PLAYER_SENSOR_MASK = 0b101
+    val PLAYER_MASK = 0b1001
+    val PLAYER_SENSOR_MASK = 0b1101
 
     val SPERM_PROJECTILE_CAT = 0b100
     val SPERM_PROJECTILE_MASK = 0b1011;
@@ -57,6 +57,7 @@ object EntityCreator {
         entity.add(PlayerMovementC(5f, 10f))
         entity.add(AttackOnClickC())
         entity.add(AttackMiniSpermC(20f, Vector2(0f, 0.75f)))
+        entity.add(HealthC(10f))
         return entity
     }
 
@@ -133,6 +134,7 @@ object EntityCreator {
         entity.add(SpriteC(sprite))
         entity.add(DestroyOnTouchC())
         entity.add(HealthC(1f))
+        entity.add(DamageOnTouchC(1f))
         return entity
     }
 
@@ -152,7 +154,7 @@ object EntityCreator {
         body.userData = entity
         entity.add(BodyC(body))
         entity.add(SpriteC(sprite))
-        entity.add(AttackPeriodicallyC(2f, 0.15f))
+        entity.add(AttackPeriodicallyC(1f, 0.15f, Math.random().toFloat() * 1f))
         entity.add(PlayAnimationOnPreAttackC())
         entity.add(AttackShootProjectileC(10f, Vector2(0f, 0.5f)))
         return entity

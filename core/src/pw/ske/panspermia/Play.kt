@@ -22,6 +22,7 @@ object Play : ScreenAdapter() {
         addSystem(AttackOnClickS)
         addSystem(AttackPeriodicallyS)
         addSystem(AttackShootProjectileS)
+        addSystem(DamageOnTouchS)
         addSystem(DamageS)
         addSystem(DestroyOnTouchS)
         addSystem(KillOnHealthZeroS)
@@ -33,7 +34,7 @@ object Play : ScreenAdapter() {
         addSystem(PreAttackS)
         addSystem(SpriteRendererS)
 
-        addEntityListener(Family.all(BodyC::class.java).get(), object: EntityListener {
+        addEntityListener(Family.all(BodyC::class.java).get(), object : EntityListener {
             override fun entityAdded(entity: Entity) {
             }
 
@@ -61,7 +62,7 @@ object Play : ScreenAdapter() {
     }
 
     override fun render(delta: Float) {
-        Gdx.gl.glClearColor(255 / 255f, 45 / 255f, 45 / 255f, 1f)
+        Gdx.gl.glClearColor(238 / 255f, 41 / 255f, 41 / 255f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         engine.update(delta)
