@@ -5,6 +5,10 @@ import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.controllers.Controller
+import com.badlogic.gdx.controllers.ControllerAdapter
+import com.badlogic.gdx.controllers.ControllerListener
+import com.badlogic.gdx.controllers.Controllers
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
@@ -15,8 +19,22 @@ import pw.ske.panspermia.component.PlayerMovementC
 import pw.ske.panspermia.position
 
 object PlayerMovementS : IteratingSystem(Family.all(BodyC::class.java, PlayerMovementC::class.java).get()) {
+    init {
+        Controllers.addListener(object: ControllerAdapter() {
+            override fun axisMoved(controller: Controller?, axisIndex: Int, value: Float): Boolean {
+                println(value)
+                return true
+            }
+        })
+    }
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val pm = entity.getComponent(PlayerMovementC::class.java)
+
+        if (Controllers.getControllers().size > 0) {
+            val ctrl = Controllers.getControllers().first().getAxis(0);
+            println(ctrl)
+        }
+
 
         val uprj = Play.camera.unproject(Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
         val pos = Vector2(uprj.x, uprj.y)

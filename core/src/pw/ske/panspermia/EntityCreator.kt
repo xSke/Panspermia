@@ -1,6 +1,7 @@
 package pw.ske.panspermia
 
 import com.badlogic.ashley.core.Entity
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Sprite
@@ -53,6 +54,10 @@ object EntityCreator {
         filter2.maskBits = PLAYER_SENSOR_MASK.toShort()
         sensor.filterData = filter2
 
+        val hurtSound = Gdx.audio.newSound(Gdx.files.internal("hurt.wav"))
+        val shootSound = Gdx.audio.newSound(Gdx.files.internal("shoot.wav"))
+        val deathSound = Gdx.audio.newSound(Gdx.files.internal("kill.wav"))
+
         val entity = Entity()
         body.userData = entity
         entity.add(BodyC(body))
@@ -61,6 +66,9 @@ object EntityCreator {
         entity.add(AttackOnClickC())
         entity.add(AttackMiniSpermC(20f, Vector2(0f, 0.75f)))
         entity.add(HealthC(10f))
+        entity.add(ScreenShakeOnDamageC(0.4f, 0.13f))
+        entity.add(SoundOnDamageC(hurtSound))
+        entity.add(SoundOnAttackC(shootSound))
         return entity
     }
 
@@ -131,6 +139,8 @@ object EntityCreator {
         filter.maskBits = BULLET_PROJECTILE_MASK.toShort()
         fix.filterData = filter
 
+        val deathSound = Gdx.audio.newSound(Gdx.files.internal("kill.wav"))
+
         val entity = Entity()
         body.userData = entity
         entity.add(BodyC(body))
@@ -138,6 +148,7 @@ object EntityCreator {
         entity.add(DestroyOnTouchC())
         entity.add(HealthC(1f))
         entity.add(DamageOnTouchC(1f))
+        entity.add(SoundOnDeathC(deathSound))
         return entity
     }
 
@@ -188,6 +199,8 @@ object EntityCreator {
 
         val offset = Math.random().toFloat() * 1f
 
+        val deathSound = Gdx.audio.newSound(Gdx.files.internal("kill.wav"))
+
         val entity = Entity()
         body.userData = entity
         entity.add(BodyC(body))
@@ -198,6 +211,7 @@ object EntityCreator {
         entity.add(DashTowardsPlayerC(10f, 1f, offset))
         entity.add(HealthC(20f))
         entity.add(BulletDeathC(15f, 100))
+        entity.add(SoundOnDeathC(deathSound))
         return entity
     }
 }

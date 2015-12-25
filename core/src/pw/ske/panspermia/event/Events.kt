@@ -8,4 +8,5 @@ object Events {
     val EntityTouchFixture = Signal<EntityTouchFixtureE>()
     val Damage = Signal<DamageE>()
     val Death = Signal<DeathE>()
+    val ScreenShake = Signal<ScreenShakeE>()
 }
