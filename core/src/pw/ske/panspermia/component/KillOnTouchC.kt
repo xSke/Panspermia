@@ -2,4 +2,4 @@ package pw.ske.panspermia.component
 
 import com.badlogic.ashley.core.Component
 
-class DestroyOnTouchC: Component
+data class KillOnTouchC(val destroyIfNonPlayer: Boolean = false) : Component

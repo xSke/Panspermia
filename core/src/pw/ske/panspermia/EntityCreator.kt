@@ -15,7 +15,7 @@ import pw.ske.panspermia.component.*
 
 object EntityCreator {
     val PLAYER_CAT = 0b10
-    val PLAYER_MASK = 0b1001
+    val PLAYER_MASK = 0b101001
     val PLAYER_SENSOR_MASK = 0b1101
 
     val SPERM_PROJECTILE_CAT = 0b100
@@ -25,6 +25,10 @@ object EntityCreator {
 
     val CELL_CAT = 0b10000
     val CELL_MASK = 0b00101
+
+    val GOLD_CAT = 0b100000
+    val GOLD_MASK = 0b11
+
     fun createPlayer(): Entity {
         val body = Play.world.createBody(BodyDef())
         body.type = BodyDef.BodyType.DynamicBody
@@ -116,7 +120,7 @@ object EntityCreator {
         body.userData = entity
         entity.add(BodyC(body))
         entity.add(SpriteC(sprite))
-        entity.add(DestroyOnTouchC())
+        entity.add(KillOnTouchC())
         entity.add(DamageOnTouchC(1f))
         return entity
     }
@@ -145,10 +149,11 @@ object EntityCreator {
         body.userData = entity
         entity.add(BodyC(body))
         entity.add(SpriteC(sprite))
-        entity.add(DestroyOnTouchC())
+        entity.add(KillOnTouchC(true))
         entity.add(HealthC(1f))
         entity.add(DamageOnTouchC(1f))
-        entity.add(SoundOnDeathC(deathSound))
+        //entity.add(SoundOnDeathC(deathSound))
+        entity.add(DropGoldC(1))
         return entity
     }
 
@@ -212,6 +217,36 @@ object EntityCreator {
         entity.add(HealthC(20f))
         entity.add(BulletDeathC(15f, 100))
         entity.add(SoundOnDeathC(deathSound))
+        entity.add(ScreenShakeOnDamageC(0.6f, 0.07f))
+        entity.add(DropGoldC(50))
+        return entity
+    }
+
+    fun createGold(): Entity {
+        val body = Play.world.createBody(BodyDef())
+        body.type = BodyDef.BodyType.DynamicBody
+
+        val sprite = Sprite(Texture("gold.png"))
+        sprite.setSize(0.125f, 0.125f)
+        sprite.setOriginCenter()
+
+        val shape = CircleShape()
+        shape.radius = 0.0625f
+
+        val fix = body.createFixture(shape, 1f)
+        fix.isSensor = true
+
+        val filter = Filter()
+        filter.categoryBits = GOLD_CAT.toShort()
+        filter.maskBits = GOLD_MASK.toShort()
+        fix.filterData = filter
+
+        val entity = Entity()
+        body.userData = entity
+        entity.add(BodyC(body))
+        entity.add(SpriteC(sprite))
+        entity.add(GoldC())
+        entity.add(HomingOnPlayerC(10f, 100f))
         return entity
     }
 }
