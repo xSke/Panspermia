@@ -68,7 +68,7 @@ object EntityCreator {
         entity.add(SpriteC(sprite))
         entity.add(PlayerMovementC(5f, 10f))
         entity.add(AttackOnClickC())
-        entity.add(AttackMiniSpermC(20f, Vector2(0f, 0.75f)))
+        entity.add(AttackMiniSpermC(GameState.projectileSpeed.value, Vector2(0f, 0.75f)))
         entity.add(HealthC(10f))
         entity.add(ScreenShakeOnDamageC(0.4f, 0.13f))
         entity.add(SoundOnDamageC(hurtSound))

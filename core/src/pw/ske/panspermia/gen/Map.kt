@@ -42,8 +42,8 @@ data class Map(val map: Array<Array<Boolean>>, val start: GridPoint2, val end: G
         box.dispose()
     }
 
-    fun placeEntities() {
-        placeWallObjects()
+    fun placeEntities(amnt: Int) {
+        placeWallObjects(amnt)
     }
 
     fun neighbors8(x: Int, y: Int): Int {
@@ -84,8 +84,8 @@ data class Map(val map: Array<Array<Boolean>>, val start: GridPoint2, val end: G
         return neighbors
     }
 
-    fun placeWallObjects() {
-        (0..100).map {
+    fun placeWallObjects(amnt: Int) {
+        (0..amnt-1).map {
             val pos = GridPoint2()
             while (map[pos.x][pos.y] || neighbors4(pos.x, pos.y) != 1) {
                 pos.set((Math.random() * width).toInt(), (Math.random() * width).toInt())

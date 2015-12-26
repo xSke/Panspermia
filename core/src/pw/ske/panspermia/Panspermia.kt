@@ -4,6 +4,6 @@ import com.badlogic.gdx.Game
 
 object Panspermia : Game() {
     override fun create() {
-        screen = Play
+        screen = Upgrade
     }
 }

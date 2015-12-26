@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.World
 import pw.ske.panspermia.component.BodyC
 import pw.ske.panspermia.gen.LevelGenerator
+import pw.ske.panspermia.gen.Map
 import pw.ske.panspermia.system.*
 import pw.ske.panspermia.ui.HUDUI
 
@@ -46,6 +47,7 @@ object Play : ScreenAdapter() {
         addSystem(SoundOnDamageS)
         addSystem(SoundOnDeathS)
         addSystem(SpriteRendererS)
+        addSystem(UpgradeOnDeathS)
 
         addEntityListener(Family.all(BodyC::class.java).get(), object : EntityListener {
             override fun entityAdded(entity: Entity) {
@@ -56,22 +58,41 @@ object Play : ScreenAdapter() {
             }
         })
     }
-    val world = World(Vector2(), true).apply {
-        setContactListener(ContactListener)
-    }
+    lateinit var world: World
+
     val batch = SpriteBatch()
     val shapeRenderer = ShapeRenderer()
 
     val camera = OrthographicCamera()
 
-    val map = LevelGenerator.genMap(100, 100).apply {
-        placeWorld()
-        placeEntities()
+    lateinit var map: Map
+
+    lateinit var player: Entity
+
+    init {
+        show()
     }
 
-    val player = EntityCreator.createPlayer().apply {
-        position = Vector2(map.start.x.toFloat(), map.start.y.toFloat())
-        engine.addEntity(this)
+    override fun show() {
+        engine.removeAllEntities()
+
+        world = World(Vector2(), true).apply {
+            setContactListener(ContactListener)
+        }
+
+        map = LevelGenerator.genMap(100, 100).apply {
+            placeWorld()
+            placeEntities(100)
+        }
+
+        player = EntityCreator.createPlayer().apply {
+            position = Vector2(map.start.x.toFloat(), map.start.y.toFloat())
+            engine.addEntity(this)
+        }
+    }
+
+    override fun hide() {
+        //world.dispose()
     }
 
     override fun render(delta: Float) {
