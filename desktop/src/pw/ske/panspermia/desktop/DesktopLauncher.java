@@ -7,6 +7,7 @@ import pw.ske.panspermia.Panspermia;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.backgroundFPS = -1;
 		new LwjglApplication(Panspermia.INSTANCE, config);
 	}
 }

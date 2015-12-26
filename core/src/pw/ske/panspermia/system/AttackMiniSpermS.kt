@@ -15,11 +15,16 @@ object AttackMiniSpermS: EntitySystem() {
             val ams = attackE.entity.getComponent(AttackMiniSpermC::class.java)
 
             if (ams != null) {
-                val sperm = EntityCreator.createMiniSperm()
-                sperm.body.linearVelocity = Vector2(0f, ams.speed).rotateRad(attackE.entity.body.angle)
-                sperm.body.setTransform(attackE.entity.body.getWorldVector(ams.offset).add(attackE.entity.position), attackE.entity.body.angle)
+                var angle = -(ams.split - 1) * 5f
+                (0..ams.split-1).forEach {
+                    val sperm = EntityCreator.createMiniSperm()
+                    sperm.body.linearVelocity = Vector2(0f, ams.speed).rotateRad(attackE.entity.body.angle).rotate(angle)
+                    sperm.body.setTransform(attackE.entity.body.getWorldVector(ams.offset).add(attackE.entity.position), attackE.entity.body.angle)
 
-                Play.engine.addEntity(sperm)
+                    Play.engine.addEntity(sperm)
+
+                    angle += 10
+                }
             }
         }
     }

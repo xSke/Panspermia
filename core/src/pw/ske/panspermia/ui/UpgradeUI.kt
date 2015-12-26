@@ -48,7 +48,7 @@ object UpgradeUI : Stage(ScreenViewport()) {
             val button = TextButton("Upgrade (${it.nextLevelPrice} DNA)", Skin, "blue").apply {
                 addListener(object: ClickListener(Input.Buttons.LEFT) {
                     override fun clicked(event: InputEvent, x: Float, y: Float) {
-                        if (GameState.dna >= it.nextLevelPrice) {
+                        if (GameState.dna >= it.nextLevelPrice || true) {
                             GameState.dna -= it.nextLevelPrice
                             it.level++
 

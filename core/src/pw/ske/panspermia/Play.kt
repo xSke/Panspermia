@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.World
+import com.badlogic.gdx.utils.Timer
 import pw.ske.panspermia.component.BodyC
 import pw.ske.panspermia.gen.LevelGenerator
 import pw.ske.panspermia.gen.Map
@@ -91,10 +92,6 @@ object Play : ScreenAdapter() {
         }
     }
 
-    override fun hide() {
-        //world.dispose()
-    }
-
     override fun render(delta: Float) {
         Gdx.gl.glClearColor(41 / 255f, 140 / 255f, 238 / 255f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
@@ -103,8 +100,6 @@ object Play : ScreenAdapter() {
 
         HUDUI.act(delta)
         HUDUI.draw()
-
-        //Box2DDebugRenderer().render(world, camera.combined)
     }
 
     override fun resize(width: Int, height: Int) {
