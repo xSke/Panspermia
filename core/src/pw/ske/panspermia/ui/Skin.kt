@@ -49,5 +49,8 @@ object Skin : Skin() {
 
         val lbl = Label.LabelStyle(font, Color.WHITE)
         add("default", lbl)
+
+        val lbls = Label.LabelStyle(fontsmall, Color.WHITE)
+        add("small", lbls)
     }
 }

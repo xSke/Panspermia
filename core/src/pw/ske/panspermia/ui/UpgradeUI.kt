@@ -43,12 +43,12 @@ object UpgradeUI : Stage(ScreenViewport()) {
 
     init {
         GameState.stats.forEachIndexed { i, it ->
-            val label = Label(it.name + " lv." + it.level, Skin)
+            val label = Label(it.name + " lv." + it.level, Skin, "small")
 
             val button = TextButton("Upgrade (${it.nextLevelPrice} DNA)", Skin, "blue").apply {
                 addListener(object: ClickListener(Input.Buttons.LEFT) {
                     override fun clicked(event: InputEvent, x: Float, y: Float) {
-                        if (GameState.dna >= it.nextLevelPrice || true) {
+                        if (GameState.dna >= it.nextLevelPrice) {
                             GameState.dna -= it.nextLevelPrice
                             it.level++
 
@@ -72,7 +72,7 @@ object UpgradeUI : Stage(ScreenViewport()) {
             } else {
                 table.row()
             }
-            table.add(button).fillX().center().padBottom(25f).row()
+            table.add(button).width(300f).center().padBottom(25f).row()
         }
 
         table.add(go).colspan(2).expandY().bottom().right().width(100f)

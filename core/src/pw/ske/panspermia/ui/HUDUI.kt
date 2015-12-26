@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import pw.ske.panspermia.GameState
 import pw.ske.panspermia.Play
 import pw.ske.panspermia.component.HealthC
 
@@ -22,11 +23,14 @@ object HUDUI : Stage(ScreenViewport()) {
     val healthSperm = Image(anim.getKeyFrame(0f))
     val healthText = Label("x0", Skin)
 
+    val dna = Label("DNA: 0", Skin)
+
     val table = Table().apply {
         top()
         pad(20f)
         add(healthSperm).size(48f, 48f)
         add(healthText)
+        add(dna).padLeft(50f)
 
         setFillParent(true)
     }
@@ -43,5 +47,7 @@ object HUDUI : Stage(ScreenViewport()) {
         counter += delta
 
         (healthSperm.drawable as TextureRegionDrawable).region = anim.getKeyFrame(counter)
+
+        dna.setText("DNA: " + GameState.dna.toString())
     }
 }
