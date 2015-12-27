@@ -38,7 +38,6 @@ object PlayerMovementS : IteratingSystem(Family.all(BodyC::class.java, PlayerMov
             println(ctrl)
         }
 
-
         val uprj = Play.camera.unproject(Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
         val pos = Vector2(uprj.x, uprj.y)
 
