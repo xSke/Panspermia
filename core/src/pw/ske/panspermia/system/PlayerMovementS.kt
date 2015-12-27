@@ -12,10 +12,12 @@ import com.badlogic.gdx.controllers.Controllers
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
+import net.dermetfan.gdx.graphics.g2d.AnimatedSprite
 import pw.ske.panspermia.Play
 import pw.ske.panspermia.body
 import pw.ske.panspermia.component.BodyC
 import pw.ske.panspermia.component.PlayerMovementC
+import pw.ske.panspermia.component.SpriteC
 import pw.ske.panspermia.position
 
 object PlayerMovementS : IteratingSystem(Family.all(BodyC::class.java, PlayerMovementC::class.java).get()) {
@@ -27,6 +29,7 @@ object PlayerMovementS : IteratingSystem(Family.all(BodyC::class.java, PlayerMov
             }
         })
     }
+
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val pm = entity.getComponent(PlayerMovementC::class.java)
 
@@ -39,7 +42,15 @@ object PlayerMovementS : IteratingSystem(Family.all(BodyC::class.java, PlayerMov
         val uprj = Play.camera.unproject(Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
         val pos = Vector2(uprj.x, uprj.y)
 
-        val vel = pos.sub(entity.position).nor().scl(pm.speed)
+        var speed = pm.speed
+
+        val lmt = 1
+        val mouseDelta = pos.sub(entity.position)
+        if (mouseDelta.len2() < lmt * lmt) {
+            speed = MathUtils.lerp(0f, speed, mouseDelta.len2() / lmt)
+        }
+
+        val vel = mouseDelta.nor().scl(speed)
         entity.body.linearVelocity = vel
         entity.body.setTransform(entity.body.position, vel.angleRad() - MathUtils.PI / 2)
 

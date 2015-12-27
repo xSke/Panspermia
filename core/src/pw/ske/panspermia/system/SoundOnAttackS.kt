@@ -10,7 +10,7 @@ object SoundOnAttackS: EntitySystem() {
         Events.Attack.add { signal, attackE ->
             val soa = attackE.entity.getComponent(SoundOnAttackC::class.java)
             if (soa != null) {
-                soa.sound.play()
+                soa.sound.play(1f, Math.random().toFloat() * 0.3f + 0.85f, 0f)
             }
         }
     }
