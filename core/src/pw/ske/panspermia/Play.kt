@@ -103,7 +103,7 @@ object Play : ScreenAdapter() {
     }
 
     override fun resize(width: Int, height: Int) {
-        camera.setToOrtho(false, width / 64f, height / 64f)
+        camera.setToOrtho(false, width / 8f, height / 8f)
 
         HUDUI.viewport.update(width, height, true)
     }

@@ -30,6 +30,11 @@ object Skin : Skin() {
         val rdu = NinePatchDrawable(redup)
         val rdd = NinePatchDrawable(reddown)
 
+        val greyup = NinePatch(Texture("greyup.9.png"), 14, 14, 14, 14)
+        val greydown = NinePatch(Texture("greydown.9.png"), 14, 14, 14, 14)
+        val gdu = NinePatchDrawable(greyup)
+        val gdd = NinePatchDrawable(greydown)
+
         val bbs = TextButton.TextButtonStyle(bdu, bdd, bdu, fontsmall)
         bbs.unpressedOffsetY = 3f
         bbs.checkedOffsetY = 3f
@@ -40,8 +45,14 @@ object Skin : Skin() {
         rbs.checkedOffsetY = 3f
         rbs.pressedOffsetY = 0f
 
+        val gbs = TextButton.TextButtonStyle(gdu, gdd, gdu, fontsmall)
+        gbs.unpressedOffsetY = 3f
+        gbs.checkedOffsetY = 3f
+        gbs.pressedOffsetY = 0f
+
         add("blue", bbs)
         add("red", rbs)
+        add("grey", gbs)
 
         add("blue", bdu)
 

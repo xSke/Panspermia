@@ -13,18 +13,18 @@ object MapRendererS : EntitySystem(999) {
         Play.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
 
         Play.shapeRenderer.color = Color(0x298CEEFF.toInt())
-        Play.map.map.forEachIndexed { x, xr ->
-            xr.forEachIndexed { y, v ->
-                if (!v) {
+        (0..Play.map.width-1).forEach { x ->
+            (0..Play.map.height-1).forEach { y ->
+                if (Play.map.map[x][y]) {
                     Play.shapeRenderer.rect(x.toFloat(), y.toFloat(), 1f, 1f)
                 }
             }
         }
 
         Play.batch.begin()
-        Play.map.map.forEachIndexed { x, xr ->
-            xr.forEachIndexed { y, v ->
-                if (v) {
+        (0..Play.map.width-1).forEach { x ->
+            (0..Play.map.height-1).forEach { y ->
+                if (Play.map.map[x][y]) {
                     Play.batch.draw(blur, x.toFloat() - 0.5f, y.toFloat() - 0.5f, 2f, 2f)
                 }
             }
@@ -32,9 +32,9 @@ object MapRendererS : EntitySystem(999) {
         Play.batch.end()
 
         Play.shapeRenderer.color = Color(0x1178DEFF.toInt())
-        Play.map.map.forEachIndexed { x, xr ->
-            xr.forEachIndexed { y, v ->
-                if (v) {
+        (0..Play.map.width-1).forEach { x ->
+            (0..Play.map.height-1).forEach { y ->
+                if (Play.map.map[x][y]) {
                     Play.shapeRenderer.rect(x.toFloat(), y.toFloat(), 1f, 1f)
                 }
             }

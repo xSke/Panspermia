@@ -62,7 +62,7 @@ object LevelGenerator {
             fillCorner()
         }
 
-        val visited = map.clone().map { it.clone() }
+        var visited = map.clone().map { it.clone() }
         val startPointsWithMost = hashMapOf<GridPoint2, Int>()
         (0..w - 1).forEach { x ->
             (0..h - 1).forEach { y ->
@@ -73,10 +73,10 @@ object LevelGenerator {
                             visited[xx][yy] = true
                             count++
 
-                            if (xx < w-1 && !visited[xx + 1][yy]) flood(xx + 1, yy)
+                            if (xx < w - 1 && !visited[xx + 1][yy]) flood(xx + 1, yy)
                             if (xx > 0 && !visited[xx - 1][yy]) flood(xx - 1, yy)
-                            if (yy < h-1 && !visited[xx][yy + 1]) flood(xx, yy + 1)
-                            if (yy < 0 && !visited[xx][yy - 1]) flood(xx, yy - 1)
+                            if (yy < h - 1 && !visited[xx][yy + 1]) flood(xx, yy + 1)
+                            if (yy > 0 && !visited[xx][yy - 1]) flood(xx, yy - 1)
                         }
                         flood(x, y)
 
@@ -86,15 +86,15 @@ object LevelGenerator {
             }
         }
 
-        val visited2 = map.clone().map { it.clone() }
+        visited = map.clone().map { it.clone() }
         fun flood(xx: Int, yy: Int) {
-            visited2[xx][yy] = true
+            visited[xx][yy] = true
             map[xx][yy] = true
 
-            if (xx < w-1 && !visited[xx + 1][yy]) flood(xx + 1, yy)
+            if (xx < w - 1 && !visited[xx + 1][yy]) flood(xx + 1, yy)
             if (xx > 0 && !visited[xx - 1][yy]) flood(xx - 1, yy)
-            if (yy < h-1 && !visited[xx][yy + 1]) flood(xx, yy + 1)
-            if (yy < 0 && !visited[xx][yy - 1]) flood(xx, yy - 1)
+            if (yy < h - 1 && !visited[xx][yy + 1]) flood(xx, yy + 1)
+            if (yy > 0 && !visited[xx][yy - 1]) flood(xx, yy - 1)
         }
 
         val pt = startPointsWithMost.maxBy { it.value }
