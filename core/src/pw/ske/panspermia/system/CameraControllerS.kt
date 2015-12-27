@@ -1,6 +1,7 @@
 package pw.ske.panspermia.system
 
 import com.badlogic.ashley.core.EntitySystem
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import pw.ske.panspermia.NumericalSpringing
 import pw.ske.panspermia.Play
@@ -12,6 +13,8 @@ object CameraControllerS : EntitySystem(1) {
 
     var screenShakeStrength = 0f
     var screenShakeTime = 0f
+    var lastMaxScreenShakeTime = 0f
+    var fade = false
 
     var lastScreenShake = Vector2()
 
@@ -19,6 +22,8 @@ object CameraControllerS : EntitySystem(1) {
         Events.ScreenShake.add { signal, screenShakeE ->
             screenShakeStrength = screenShakeE.strength
             screenShakeTime = screenShakeE.time
+            lastMaxScreenShakeTime = screenShakeE.time
+            fade = screenShakeE.fade
         }
     }
 
@@ -28,8 +33,13 @@ object CameraControllerS : EntitySystem(1) {
         Play.camera.position.set(pos, 0f)
 
         if (screenShakeTime > 0f) {
+            val strength = if (fade) {
+                MathUtils.lerp(0f, screenShakeStrength, screenShakeTime / lastMaxScreenShakeTime)
+            } else {
+                screenShakeStrength
+            }
             screenShakeTime -= deltaTime
-            lastScreenShake.set(Math.random().toFloat() * screenShakeStrength * 2 - screenShakeStrength, Math.random().toFloat() * screenShakeStrength * 2 - screenShakeStrength)
+            lastScreenShake.set(Math.random().toFloat() * strength * 2 - strength, Math.random().toFloat() * strength * 2 - strength)
             Play.camera.position.add(lastScreenShake.x, lastScreenShake.y, 0f)
         } else {
             lastScreenShake.setZero()

@@ -73,6 +73,7 @@ object EntityCreator {
         entity.add(ScreenShakeOnDamageC(0.4f, 0.13f))
         entity.add(SoundOnDamageC(hurtSound))
         entity.add(SoundOnAttackC(shootSound))
+        entity.add(ScreenShakeOnDeathC(1.5f, 2f, true))
         return entity
     }
 
@@ -218,6 +219,7 @@ object EntityCreator {
         entity.add(BulletDeathC(15f, 100))
         entity.add(SoundOnDeathC(deathSound))
         //entity.add(ScreenShakeOnDamageC(0.6f, 0.07f))
+        entity.add(ScreenShakeOnDeathC(0.8f, 0.2f, false))
         entity.add(DropGoldC(50))
         return entity
     }

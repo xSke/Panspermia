@@ -10,7 +10,7 @@ object ScreenShakeOnDamageS: EntitySystem() {
         Events.Damage.add { signal, damageE ->
             val ssod = damageE.entity.getComponent(ScreenShakeOnDamageC::class.java)
             if (ssod != null) {
-                Events.ScreenShake.dispatch(ScreenShakeE(ssod.strength, ssod.time))
+                Events.ScreenShake.dispatch(ScreenShakeE(ssod.strength, ssod.time, false))
             }
         }
     }

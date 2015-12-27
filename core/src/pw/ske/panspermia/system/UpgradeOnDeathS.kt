@@ -1,6 +1,7 @@
 package pw.ske.panspermia.system
 
 import com.badlogic.ashley.core.EntitySystem
+import com.badlogic.gdx.utils.Timer
 import pw.ske.panspermia.Panspermia
 import pw.ske.panspermia.Play
 import pw.ske.panspermia.Upgrade
@@ -19,7 +20,11 @@ object UpgradeOnDeathS: EntitySystem() {
 
     override fun update(deltaTime: Float) {
         if (switch) {
-            Panspermia.setScreen(Upgrade)
+            Timer.instance().scheduleTask(object: Timer.Task() {
+                override fun run() {
+                    Panspermia.setScreen(Upgrade)
+                }
+            }, 3f)
             switch = false
         }
     }

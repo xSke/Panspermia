@@ -44,6 +44,7 @@ object Play : ScreenAdapter() {
         addSystem(PreAttackS)
         addSystem(RandomSpawnCellS)
         addSystem(ScreenShakeOnDamageS)
+        addSystem(ScreenShakeOnDeathS)
         addSystem(SoundOnAttackS)
         addSystem(SoundOnDamageS)
         addSystem(SoundOnDeathS)
