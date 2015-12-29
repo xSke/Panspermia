@@ -11,10 +11,11 @@ object UpgradeOnDeathS: EntitySystem() {
     var switch = false
 
     init {
-        Events.Death.add { signal, deathE ->
+        Events.Death.add {  deathE ->
             if (deathE.entity == Play.player) {
                 switch = true
             }
+            false
         }
     }
 

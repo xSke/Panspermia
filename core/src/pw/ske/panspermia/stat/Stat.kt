@@ -10,6 +10,6 @@ data class Stat<T>(val name: String, var level: Int, val maxLevel: Int, val leve
     }
 
     val value: T get() {
-        return levelValues[level - 1]
+        return levelValues[level]
     }
 }

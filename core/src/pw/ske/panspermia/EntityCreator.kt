@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape
 import com.badlogic.gdx.physics.box2d.Filter
 import net.dermetfan.gdx.graphics.g2d.AnimatedSprite
 import pw.ske.panspermia.component.*
+import pw.ske.panspermia.util.*
 
 object EntityCreator {
     val PLAYER_CAT = 0b10
@@ -45,18 +46,10 @@ object EntityCreator {
         shape.radius = 0.49f
 
         val fix = body.createFixture(shape, 1f)
-        val filter = Filter()
-        filter.categoryBits = PLAYER_CAT.toShort()
-        filter.maskBits = PLAYER_MASK.toShort()
-        fix.filterData = filter
 
         shape.radius = 0.15f
         shape.position = Vector2(0f, 0.3f)
         val sensor = body.createFixture(shape, 1f)
-        val filter2 = Filter()
-        filter2.categoryBits = PLAYER_CAT.toShort()
-        filter2.maskBits = PLAYER_SENSOR_MASK.toShort()
-        sensor.filterData = filter2
 
         val hurtSound = Gdx.audio.newSound(Gdx.files.internal("hurt.wav"))
         val shootSound = Gdx.audio.newSound(Gdx.files.internal("shoot.wav"))
@@ -64,6 +57,7 @@ object EntityCreator {
 
         val entity = Entity()
         body.userData = entity
+        entity.add(FilterC(Category.Player))
         entity.add(BodyC(body))
         entity.add(SpriteC(sprite))
         entity.add(PlayerMovementC(5f, 10f))
@@ -73,7 +67,12 @@ object EntityCreator {
         entity.add(ScreenShakeOnDamageC(0.4f, 0.13f))
         entity.add(SoundOnDamageC(hurtSound))
         entity.add(SoundOnAttackC(shootSound))
+        entity.add(SoundOnDeathC(deathSound))
         entity.add(ScreenShakeOnDeathC(1.5f, 2f, true))
+
+        if (GameState.shield.value > 0) {
+            entity.add(ShieldC(GameState.shield.value, 3f))
+        }
         return entity
     }
 
@@ -92,6 +91,7 @@ object EntityCreator {
         val entity = Entity()
         body.userData = entity
         entity.add(BodyC(body))
+        entity.add(FilterC(Category.Scenery))
         entity.add(SpriteC(sprite))
         return entity
     }
@@ -120,8 +120,9 @@ object EntityCreator {
         val entity = Entity()
         body.userData = entity
         entity.add(BodyC(body))
+        entity.add(FilterC(Category.PlayerProjectile))
         entity.add(SpriteC(sprite))
-        entity.add(KillOnTouchC())
+        entity.add(DestroyOnTouchC(setOf(Category.Wall)))
         entity.add(DamageOnTouchC(1f))
         return entity
     }
@@ -149,8 +150,9 @@ object EntityCreator {
         val entity = Entity()
         body.userData = entity
         entity.add(BodyC(body))
+        entity.add(FilterC(Category.EnemyProjectile))
         entity.add(SpriteC(sprite))
-        entity.add(KillOnTouchC(true))
+        entity.add(DestroyOnTouchC(setOf(Category.Wall)))
         entity.add(HealthC(1f))
         entity.add(DamageOnTouchC(1f))
         //entity.add(SoundOnDeathC(deathSound))
@@ -173,6 +175,7 @@ object EntityCreator {
         val entity = Entity()
         body.userData = entity
         entity.add(BodyC(body))
+        entity.add(FilterC(Category.Scenery))
         entity.add(SpriteC(sprite))
         entity.add(AttackPeriodicallyC(1f, 0.15f, Math.random().toFloat() * 1f))
         entity.add(PlayAnimationOnPreAttackC())
@@ -198,11 +201,6 @@ object EntityCreator {
         shape.radius = 1f
 
         val fix = body.createFixture(shape, 1f)
-        val filter = Filter()
-        filter.categoryBits = CELL_CAT.toShort()
-        filter.maskBits = CELL_MASK.toShort()
-        fix.filterData = filter
-
         val offset = Math.random().toFloat() * 1f
 
         val deathSound = Gdx.audio.newSound(Gdx.files.internal("kill.wav"))
@@ -210,6 +208,7 @@ object EntityCreator {
         val entity = Entity()
         body.userData = entity
         entity.add(BodyC(body))
+        entity.add(FilterC(Category.Cell))
         entity.add(SpriteC(sprite))
         entity.add(AttackPeriodicallyC(1f, 0.15f, offset))
         entity.add(PlayAnimationOnPreAttackC())
@@ -218,13 +217,12 @@ object EntityCreator {
         entity.add(HealthC(20f))
         entity.add(BulletDeathC(15f, 100))
         entity.add(SoundOnDeathC(deathSound))
-        //entity.add(ScreenShakeOnDamageC(0.6f, 0.07f))
         entity.add(ScreenShakeOnDeathC(0.8f, 0.2f, false))
         entity.add(DropGoldC(50))
         return entity
     }
 
-    fun createGold(): Entity {
+    fun createDNA(): Entity {
         val body = Play.world.createBody(BodyDef())
         body.type = BodyDef.BodyType.DynamicBody
 
@@ -238,14 +236,10 @@ object EntityCreator {
         val fix = body.createFixture(shape, 1f)
         fix.isSensor = true
 
-        val filter = Filter()
-        filter.categoryBits = GOLD_CAT.toShort()
-        filter.maskBits = GOLD_MASK.toShort()
-        fix.filterData = filter
-
         val entity = Entity()
         body.userData = entity
         entity.add(BodyC(body))
+        entity.add(FilterC(Category.DNA))
         entity.add(SpriteC(sprite))
         entity.add(GoldC())
         entity.add(HomingOnPlayerC(10f, 100f))

@@ -1,6 +1,6 @@
 package pw.ske.panspermia.event
 
-import com.badlogic.ashley.signals.Signal
+import pw.ske.panspermia.util.Signal
 
 object Events {
     val PreAttack = Signal<PreAttackE>()

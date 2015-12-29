@@ -6,11 +6,12 @@ import pw.ske.panspermia.event.Events
 
 object SoundOnDamageS: EntitySystem() {
     init {
-        Events.Damage.add { signal, damageE ->
+        Events.Damage.add { damageE ->
             val sod = damageE.entity.getComponent(SoundOnDamageC::class.java)
             if (sod != null) {
                 sod.sound.play()
             }
+            false
         }
     }
 }

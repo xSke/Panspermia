@@ -19,6 +19,8 @@ import pw.ske.panspermia.gen.LevelGenerator
 import pw.ske.panspermia.gen.Map
 import pw.ske.panspermia.system.*
 import pw.ske.panspermia.ui.HUDUI
+import pw.ske.panspermia.util.ContactFilter
+import pw.ske.panspermia.util.ContactListener
 
 object Play : ScreenAdapter() {
     val engine = Engine().apply {
@@ -32,10 +34,10 @@ object Play : ScreenAdapter() {
         addSystem(DamageS)
         addSystem(DashTowardsPlayerS)
         addSystem(DeathS)
+        addSystem(DestroyOnTouchS)
         addSystem(DropGoldS)
         addSystem(HomingOnPlayerS)
         addSystem(KillOnHealthZeroS)
-        addSystem(KillOnTouchS)
         addSystem(MapRendererS)
         addSystem(PhysicsS)
         addSystem(PickUpGoldS)
@@ -45,6 +47,8 @@ object Play : ScreenAdapter() {
         addSystem(RandomSpawnCellS)
         addSystem(ScreenShakeOnDamageS)
         addSystem(ScreenShakeOnDeathS)
+        addSystem(ShieldRendererS)
+        addSystem(ShieldS)
         addSystem(SoundOnAttackS)
         addSystem(SoundOnDamageS)
         addSystem(SoundOnDeathS)
@@ -80,6 +84,7 @@ object Play : ScreenAdapter() {
 
         world = World(Vector2(), true).apply {
             setContactListener(ContactListener)
+            setContactFilter(ContactFilter)
         }
 
         map = LevelGenerator.genMap(100, 100).apply {

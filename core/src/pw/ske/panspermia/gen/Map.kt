@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape
 import pw.ske.panspermia.EntityCreator
 import pw.ske.panspermia.Play
 import pw.ske.panspermia.body
+import pw.ske.panspermia.util.Category
 
 data class Map(val map: Array<Array<Boolean>>, val start: GridPoint2, val end: GridPoint2, val width: Int, val height: Int) {
     fun placeWorld() {
@@ -24,6 +25,7 @@ data class Map(val map: Array<Array<Boolean>>, val start: GridPoint2, val end: G
                             shape.set(x1.toFloat(), y1.toFloat(), x2.toFloat(), y2.toFloat())
 
                             val fix = body.createFixture(shape, 0f)
+                            fix.userData = Category.Wall
                         }
                     }
 
@@ -34,6 +36,7 @@ data class Map(val map: Array<Array<Boolean>>, val start: GridPoint2, val end: G
 
                     box.setAsBox(0.45f, 0.45f, Vector2(x + 0.5f, y + 0.5f), 0f)
                     val fix = body.createFixture(box, 0f)
+                    fix.userData = Category.Wall
                 }
             }
         }

@@ -9,16 +9,17 @@ import pw.ske.panspermia.position
 
 object DropGoldS: EntitySystem() {
     init {
-        Events.Death.add { signal, deathE ->
+        Events.Death.add { deathE ->
             val dg = deathE.entity.getComponent(DropGoldC::class.java)
             if (dg != null) {
                 (0..dg.gold-1).forEach {
-                    val gold = EntityCreator.createGold()
+                    val gold = EntityCreator.createDNA()
                     gold.position = deathE.entity.position
 
                     Play.engine.addEntity(gold)
                 }
             }
+            false
         }
     }
 }

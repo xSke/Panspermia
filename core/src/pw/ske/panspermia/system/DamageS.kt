@@ -6,11 +6,12 @@ import pw.ske.panspermia.event.Events
 
 object DamageS: EntitySystem() {
     init {
-        Events.Damage.add { signal, damageE ->
+        Events.Damage.add(1) { damageE ->
             val d = damageE.entity.getComponent(HealthC::class.java)
             if (d != null) {
                 d.health -= damageE.damage
             }
+            false
         }
     }
 }

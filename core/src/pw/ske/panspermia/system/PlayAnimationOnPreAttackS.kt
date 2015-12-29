@@ -7,9 +7,10 @@ import pw.ske.panspermia.event.Events
 
 object PlayAnimationOnPreAttackS: EntitySystem() {
     init {
-        Events.PreAttack.add { signal, preAttackE ->
+        Events.PreAttack.add { preAttackE ->
             (preAttackE.entity.getComponent(SpriteC::class.java).sprite as AnimatedSprite).play()
             (preAttackE.entity.getComponent(SpriteC::class.java).sprite as AnimatedSprite).time = 0f
+            false
         }
     }
 }

@@ -1,4 +1,4 @@
-package pw.ske.panspermia
+package pw.ske.panspermia.util
 
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2

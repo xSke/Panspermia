@@ -11,7 +11,7 @@ object PickUpGoldS: EntitySystem() {
     val sound = Gdx.audio.newSound(Gdx.files.internal("coin.wav"))
 
     init {
-        Events.EntityTouchFixture.add { signal, entityTouchFixtureE ->
+        Events.EntityTouchFixture.add { entityTouchFixtureE ->
             val g = entityTouchFixtureE.entity.getComponent(GoldC::class.java)
 
             if (g != null) {
@@ -22,6 +22,7 @@ object PickUpGoldS: EntitySystem() {
                     GameState.dna++
                 }
             }
+            false
         }
     }
 }

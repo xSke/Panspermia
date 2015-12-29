@@ -3,7 +3,7 @@ package pw.ske.panspermia.system
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
-import pw.ske.panspermia.NumericalSpringing
+import pw.ske.panspermia.util.NumericalSpringing
 import pw.ske.panspermia.Play
 import pw.ske.panspermia.event.Events
 import pw.ske.panspermia.position
@@ -19,11 +19,12 @@ object CameraControllerS : EntitySystem(1) {
     var lastScreenShake = Vector2()
 
     init {
-        Events.ScreenShake.add { signal, screenShakeE ->
+        Events.ScreenShake.add { screenShakeE ->
             screenShakeStrength = screenShakeE.strength
             screenShakeTime = screenShakeE.time
             lastMaxScreenShakeTime = screenShakeE.time
             fade = screenShakeE.fade
+            false
         }
     }
 

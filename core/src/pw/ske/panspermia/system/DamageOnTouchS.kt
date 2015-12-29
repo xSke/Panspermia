@@ -9,16 +9,17 @@ import pw.ske.panspermia.event.Events
 
 object DamageOnTouchS: EntitySystem() {
     init {
-        Events.EntityTouchFixture.add { signal, entityTouchFixtureE ->
+        Events.EntityTouchFixture.add { entityTouchFixtureE ->
             val dot = entityTouchFixtureE.entity.getComponent(DamageOnTouchC::class.java)
             if (dot != null) {
                 if (entityTouchFixtureE.fixture.body.userData is Entity) {
                     val other = entityTouchFixtureE.fixture.body.userData as Entity
                     if (other.getComponent(HealthC::class.java) != null) {
-                        Events.Damage.dispatch(DamageE(other, dot.damage))
+                        Events.Damage.dispatch(DamageE(other, dot.damage, entityTouchFixtureE.entity))
                     }
                 }
             }
+            false
         }
     }
 }

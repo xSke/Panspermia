@@ -7,12 +7,13 @@ import pw.ske.panspermia.event.AttackE
 
 object PreAttackS : EntitySystem() {
     init {
-        Events.PreAttack.add { signal, e ->
+        Events.PreAttack.add { e ->
             Timer.instance().scheduleTask(object : Timer.Task() {
                 override fun run() {
                     Events.Attack.dispatch(AttackE(e.entity))
                 }
             }, e.delay)
+            false
         }
     }
 }

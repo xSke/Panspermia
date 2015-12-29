@@ -1,4 +1,4 @@
-package pw.ske.panspermia
+package pw.ske.panspermia.util
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.physics.box2d.Contact

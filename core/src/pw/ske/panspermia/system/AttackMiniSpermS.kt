@@ -11,7 +11,7 @@ import pw.ske.panspermia.position
 
 object AttackMiniSpermS: EntitySystem() {
     init {
-        Events.Attack.add { signal, attackE ->
+        Events.Attack.add { attackE ->
             val ams = attackE.entity.getComponent(AttackMiniSpermC::class.java)
 
             if (ams != null) {
@@ -26,6 +26,7 @@ object AttackMiniSpermS: EntitySystem() {
                     angle += 10
                 }
             }
+            false
         }
     }
 }
