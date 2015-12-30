@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.utils.Timer
 import pw.ske.panspermia.component.BodyC
@@ -38,6 +39,7 @@ object Play : ScreenAdapter() {
         addSystem(DropGoldS)
         addSystem(HomingOnPlayerS)
         addSystem(KillOnHealthZeroS)
+        addSystem(KnockbackS)
         addSystem(MapRendererS)
         addSystem(PhysicsS)
         addSystem(PickUpGoldS)
@@ -90,6 +92,7 @@ object Play : ScreenAdapter() {
         map = LevelGenerator.genMap(100, 100).apply {
             placeWorld()
             placeEntities(100)
+            placeBoss()
         }
 
         player = EntityCreator.createPlayer().apply {
@@ -106,6 +109,8 @@ object Play : ScreenAdapter() {
 
         HUDUI.act(delta)
         HUDUI.draw()
+
+        Box2DDebugRenderer().render(world, camera.combined)
     }
 
     override fun resize(width: Int, height: Int) {

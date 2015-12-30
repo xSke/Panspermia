@@ -6,30 +6,19 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.GridPoint2
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.CircleShape
 import com.badlogic.gdx.physics.box2d.Filter
+import com.badlogic.gdx.physics.box2d.PolygonShape
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef
 import net.dermetfan.gdx.graphics.g2d.AnimatedSprite
 import pw.ske.panspermia.component.*
 import pw.ske.panspermia.util.*
 
 object EntityCreator {
-    val PLAYER_CAT = 0b10
-    val PLAYER_MASK = 0b101001
-    val PLAYER_SENSOR_MASK = 0b1101
-
-    val SPERM_PROJECTILE_CAT = 0b100
-    val SPERM_PROJECTILE_MASK = 0b11011
-    val BULLET_PROJECTILE_CAT = 0b1000
-    val BULLET_PROJECTILE_MASK = 0b111
-
-    val CELL_CAT = 0b10000
-    val CELL_MASK = 0b00101
-
-    val GOLD_CAT = 0b100000
-    val GOLD_MASK = 0b11
-
     fun createPlayer(): Entity {
         val body = Play.world.createBody(BodyDef())
         body.type = BodyDef.BodyType.DynamicBody
@@ -112,10 +101,6 @@ object EntityCreator {
 
         val fix = body.createFixture(shape, 1f)
         fix.isSensor = true
-        val filter = Filter()
-        filter.categoryBits = SPERM_PROJECTILE_CAT.toShort()
-        filter.maskBits = SPERM_PROJECTILE_MASK.toShort()
-        fix.filterData = filter
 
         val entity = Entity()
         body.userData = entity
@@ -140,12 +125,6 @@ object EntityCreator {
 
         val fix = body.createFixture(shape, 1f)
         fix.isSensor = true
-        val filter = Filter()
-        filter.categoryBits = BULLET_PROJECTILE_CAT.toShort()
-        filter.maskBits = BULLET_PROJECTILE_MASK.toShort()
-        fix.filterData = filter
-
-        val deathSound = Gdx.audio.newSound(Gdx.files.internal("kill.wav"))
 
         val entity = Entity()
         body.userData = entity
@@ -157,6 +136,90 @@ object EntityCreator {
         entity.add(DamageOnTouchC(1f))
         //entity.add(SoundOnDeathC(deathSound))
         entity.add(DropGoldC(1))
+        return entity
+    }
+
+    fun createAndAddBoss(pos: GridPoint2) {
+        val bossCell = createBossCell()
+        bossCell.position = Vector2(pos.x.toFloat(), pos.y.toFloat())
+        Play.engine.addEntity(bossCell)
+
+        val i = 32
+
+        var last: Entity? = null
+        var first: Entity? = null
+        (0..i - 1).forEach {
+            val seg = createBossSegment()
+
+            seg.body.setTransform(
+                    bossCell.position.add(Vector2(0f, 5f).rotate(it * (360f / i))),
+                    it * (360f / i) * MathUtils.degreesToRadians
+            )
+            Play.engine.addEntity(seg)
+            if (first == null) first = seg;
+
+            if (last != null) {
+                val jd = RevoluteJointDef()
+                jd.initialize(last!!.body, seg.body, seg.body.position.add(Vector2(0.5f, 0f).rotate(it * (360f / i))))
+                jd.lowerAngle = jd.referenceAngle
+                jd.upperAngle = jd.referenceAngle
+                jd.enableLimit = true
+
+                Play.world.createJoint(jd)
+            }
+
+            last = seg
+        }
+
+        val jd = RevoluteJointDef()
+        jd.initialize(last!!.body, first!!.body, first!!.position.add(Vector2(0.5f, 0f)))
+        jd.enableLimit = true
+        jd.lowerAngle = -jd.referenceAngle
+        jd.upperAngle = -jd.referenceAngle
+        Play.world.createJoint(jd)
+    }
+
+    fun createBossCell(): Entity {
+        val body = Play.world.createBody(BodyDef())
+        body.type = BodyDef.BodyType.StaticBody
+        body.linearDamping = 1000f
+
+        val sprite = Sprite(Texture("bosscell.png"))
+        sprite.setSize(3f, 3f)
+        sprite.setOriginCenter()
+
+        val shape = PolygonShape()
+        shape.setAsBox(1.5f, 1.5f)
+
+        val fix = body.createFixture(shape, 1f)
+
+        val entity = Entity()
+        body.userData = entity
+        entity.add(BodyC(body))
+        entity.add(FilterC(Category.BossCell))
+        entity.add(SpriteC(sprite))
+        return entity
+    }
+
+    fun createBossSegment(): Entity {
+        val body = Play.world.createBody(BodyDef())
+        body.type = BodyDef.BodyType.DynamicBody
+        body.linearDamping = 10f
+
+        val sprite = Sprite(Texture("bosssegment.png"))
+        sprite.setSize(1f, 0.5f)
+        sprite.setOriginCenter()
+
+        val shape = PolygonShape()
+        shape.setAsBox(0.5f, 0.25f)
+
+        val fix = body.createFixture(shape, 1f)
+
+        val entity = Entity()
+        body.userData = entity
+        entity.add(BodyC(body))
+        entity.add(FilterC(Category.BossShield))
+        entity.add(SpriteC(sprite))
         return entity
     }
 

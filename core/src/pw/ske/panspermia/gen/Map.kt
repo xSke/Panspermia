@@ -10,6 +10,7 @@ import pw.ske.panspermia.EntityCreator
 import pw.ske.panspermia.Play
 import pw.ske.panspermia.body
 import pw.ske.panspermia.util.Category
+import java.util.*
 
 data class Map(val map: Array<Array<Boolean>>, val start: GridPoint2, val end: GridPoint2, val width: Int, val height: Int) {
     fun placeWorld() {
@@ -87,8 +88,49 @@ data class Map(val map: Array<Array<Boolean>>, val start: GridPoint2, val end: G
         return neighbors
     }
 
+    fun placeBoss() {
+        val startPointsWithMost = hashMapOf<GridPoint2, Int>()
+
+        (0..200).map {
+            val pos = GridPoint2()
+            while (map[pos.x][pos.y]) {
+                pos.set((Math.random() * width).toInt(), (Math.random() * width).toInt())
+            }
+            pos
+        }.forEach {
+            val visited = Array(width, { Array(height, { false }) })
+
+            var count = 1
+            val stack = LinkedList<GridPoint2>()
+            stack.push(it)
+
+            while (!stack.isEmpty()) {
+                val item = stack.removeLast()
+                val xx = item.x
+                val yy = item.y
+                visited[xx][yy] = true
+
+                if (map[xx][yy]) {
+                    break
+                }
+
+                count += 1
+
+                if (xx < width - 1 && !visited[xx + 1][yy]) stack.push(GridPoint2(xx + 1, yy))
+                if (xx > 0 && !visited[xx - 1][yy]) stack.push(GridPoint2(xx - 1, yy))
+                if (yy < height - 1 && !visited[xx][yy + 1]) stack.push(GridPoint2(xx, yy + 1))
+                if (yy > 0 && !visited[xx][yy - 1]) stack.push(GridPoint2(xx, yy - 1))
+            }
+
+            startPointsWithMost[GridPoint2(it.x, it.y)] = count
+        }
+
+        val bossPosition = startPointsWithMost.maxBy { it.value }
+        EntityCreator.createAndAddBoss(bossPosition!!.key)
+    }
+
     fun placeWallObjects(amnt: Int) {
-        (0..amnt-1).map {
+        (0..amnt - 1).map {
             val pos = GridPoint2()
             while (map[pos.x][pos.y] || neighbors4(pos.x, pos.y) != 1) {
                 pos.set((Math.random() * width).toInt(), (Math.random() * width).toInt())

@@ -13,12 +13,13 @@ object AttackMiniSpermS: EntitySystem() {
     init {
         Events.Attack.add { attackE ->
             val ams = attackE.entity.getComponent(AttackMiniSpermC::class.java)
+            val spread = 5
 
             if (ams != null) {
                 var angle = -(ams.split - 1) * 5f
                 (0..ams.split-1).forEach {
                     val sperm = EntityCreator.createMiniSperm()
-                    sperm.body.linearVelocity = Vector2(0f, ams.speed).rotateRad(attackE.entity.body.angle).rotate(angle).rotate(Math.random().toFloat() * 2f - 1f)
+                    sperm.body.linearVelocity = Vector2(0f, ams.speed).rotateRad(attackE.entity.body.angle).rotate(angle).rotate(Math.random().toFloat() * spread * 2 - spread)
                     sperm.body.setTransform(attackE.entity.body.getWorldVector(ams.offset).add(attackE.entity.position), attackE.entity.body.angle)
 
                     Play.engine.addEntity(sperm)

@@ -28,6 +28,8 @@ data class Category(val name: String) {
         val PlayerProjectile = Category("PlayerProjectile")
         val EnemyProjectile = Category("EnemyProjectile")
         val Cell = Category("Cell")
+        val BossCell = Category("BossCell")
+        val BossShield = Category("BossShield")
         val DNA = Category("DNA")
         val Scenery = Category("Scenery")
 
