@@ -22,7 +22,7 @@ object AttackShootProjectileS: EntitySystem() {
                         attackE.entity.body.getWorldVector(offset).nor()
                     }
 
-                    val proj = EntityCreator.createProjectile()
+                    val proj = EntityCreator.createProjectile(asp.homing)
                     proj.position = pos
                     proj.body.linearVelocity = vel.scl(asp.speed)
 

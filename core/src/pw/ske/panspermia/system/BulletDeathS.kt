@@ -15,7 +15,7 @@ object BulletDeathS : EntitySystem() {
             val bd = deathE.entity.getComponent(BulletDeathC::class.java)
             if (bd != null) {
                 (0..bd.amount-1).forEach {
-                    val proj = EntityCreator.createProjectile()
+                    val proj = EntityCreator.createProjectile(false)
                     proj.position = deathE.entity.position
                     proj.body.linearVelocity = Vector2(0f, 1f).rotate(Math.random().toFloat() * 360).nor().scl(Math.random().toFloat() * bd.speed)
 

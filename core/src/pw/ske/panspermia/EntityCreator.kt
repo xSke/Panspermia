@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape
 import com.badlogic.gdx.physics.box2d.Filter
 import com.badlogic.gdx.physics.box2d.PolygonShape
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef
+import com.badlogic.gdx.physics.box2d.joints.WeldJointDef
 import net.dermetfan.gdx.graphics.g2d.AnimatedSprite
 import pw.ske.panspermia.component.*
 import pw.ske.panspermia.util.*
@@ -108,11 +109,11 @@ object EntityCreator {
         entity.add(FilterC(Category.PlayerProjectile))
         entity.add(SpriteC(sprite))
         entity.add(DestroyOnTouchC(setOf(Category.Wall)))
-        entity.add(DamageOnTouchC(1f))
+        entity.add(DamageOnTouchC(1f, true))
         return entity
     }
 
-    fun createProjectile(): Entity {
+    fun createProjectile(homing: Boolean): Entity {
         val body = Play.world.createBody(BodyDef())
         body.type = BodyDef.BodyType.DynamicBody
 
@@ -133,9 +134,12 @@ object EntityCreator {
         entity.add(SpriteC(sprite))
         entity.add(DestroyOnTouchC(setOf(Category.Wall)))
         entity.add(HealthC(1f))
-        entity.add(DamageOnTouchC(1f))
-        //entity.add(SoundOnDeathC(deathSound))
+        entity.add(DamageOnTouchC(1f, true))
         entity.add(DropGoldC(1))
+
+        if (homing) {
+            entity.add(HomingOnPlayerC(20f, 100f))
+        }
         return entity
     }
 
@@ -156,6 +160,18 @@ object EntityCreator {
                     it * (360f / i) * MathUtils.degreesToRadians
             )
             Play.engine.addEntity(seg)
+
+            val cannon = createBossSmallCannon()
+            cannon.body.setTransform(
+                    seg.position.add(Vector2(0f, 0.5f).rotate(it * (360f / i))),
+                    it * (360f / i) * MathUtils.degreesToRadians
+            )
+            Play.engine.addEntity(cannon)
+
+            val cannonJoint = WeldJointDef()
+            cannonJoint.initialize(seg.body, cannon.body, seg.position.add(Vector2(0f, 0.25f).rotate(it * (360f / i))))
+            Play.world.createJoint(cannonJoint)
+
             if (first == null) first = seg;
 
             if (last != null) {
@@ -220,6 +236,30 @@ object EntityCreator {
         entity.add(BodyC(body))
         entity.add(FilterC(Category.BossShield))
         entity.add(SpriteC(sprite))
+        entity.add(HealthC(500f))
+        return entity
+    }
+
+    fun createBossSmallCannon(): Entity {
+        val body = Play.world.createBody(BodyDef())
+        body.type = BodyDef.BodyType.DynamicBody
+        body.linearDamping = 10f
+
+        val anim = Animation(0.15f, *TextureRegion.split(Texture("smallcannon.png"), 8, 8)[0])
+        anim.playMode = Animation.PlayMode.NORMAL
+
+        val sprite = AnimatedSprite(anim)
+        sprite.setSize(0.5f, 0.5f)
+        sprite.setOriginCenter()
+
+        val entity = Entity()
+        body.userData = entity
+        entity.add(BodyC(body))
+        entity.add(FilterC(Category.BossShield))
+        entity.add(SpriteC(sprite))
+        entity.add(AttackPeriodicallyC(1f, 0.15f, Math.random().toFloat() * 1f))
+        entity.add(PlayAnimationOnPreAttackC())
+        entity.add(AttackShootProjectileC(10f, listOf(Vector2(0f, 0.5f)), false, true))
         return entity
     }
 
@@ -231,7 +271,6 @@ object EntityCreator {
         anim.playMode = Animation.PlayMode.NORMAL
 
         val sprite = AnimatedSprite(anim)
-        sprite.time = Math.random().toFloat()
         sprite.setSize(1f, 1f)
         sprite.setOriginCenter()
 
@@ -297,7 +336,7 @@ object EntityCreator {
         shape.radius = 0.0625f
 
         val fix = body.createFixture(shape, 1f)
-        fix.isSensor = true
+        //fix.isSensor = true
 
         val entity = Entity()
         body.userData = entity

@@ -40,6 +40,14 @@ data class Category(val name: String) {
             collideMap[Pair(Player, PlayerProjectile)] = false
             collideMap[Pair(Cell, EnemyProjectile)] = false
             collideMap[Pair(Scenery, EnemyProjectile)] = false
+            collideMap[Pair(BossCell, EnemyProjectile)] = false
+            collideMap[Pair(BossShield, EnemyProjectile)] = false
+            collideMap[Pair(DNA, Wall)] = false
+            collideMap[Pair(DNA, EnemyProjectile)] = false
+            collideMap[Pair(DNA, PlayerProjectile)] = false
+            collideMap[Pair(DNA, Cell)] = false
+            collideMap[Pair(DNA, BossCell)] = false
+            collideMap[Pair(DNA, BossShield)] = false
         }
 
         fun getCategory(fixture: Fixture): Category {

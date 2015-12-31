@@ -2,12 +2,16 @@ package pw.ske.panspermia.system
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntitySystem
+import pw.ske.panspermia.Play
 import pw.ske.panspermia.component.DamageOnTouchC
 import pw.ske.panspermia.component.HealthC
 import pw.ske.panspermia.event.DamageE
+import pw.ske.panspermia.event.DeathE
 import pw.ske.panspermia.event.Events
 
 object DamageOnTouchS: EntitySystem() {
+    var toKill = arrayListOf<Entity>()
+
     init {
         Events.EntityTouchFixture.add { entityTouchFixtureE ->
             val dot = entityTouchFixtureE.entity.getComponent(DamageOnTouchC::class.java)
@@ -17,9 +21,20 @@ object DamageOnTouchS: EntitySystem() {
                     if (other.getComponent(HealthC::class.java) != null) {
                         Events.Damage.dispatch(DamageE(other, dot.damage, entityTouchFixtureE.entity))
                     }
+
+                    if (dot.killThis) {
+                        //toKill.add(entityTouchFixtureE.entity)
+                    }
                 }
             }
             false
         }
+    }
+
+    override fun update(deltaTime: Float) {
+        toKill.forEach {
+            Events.Death.dispatch(DeathE(it))
+        }
+        toKill.clear()
     }
 }
