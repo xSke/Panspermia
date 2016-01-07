@@ -3,7 +3,7 @@ package pw.ske.panspermia.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
-import pw.ske.panspermia.Play
+import pw.ske.panspermia.screen.Play
 import pw.ske.panspermia.component.HealthC
 import pw.ske.panspermia.event.DeathE
 import pw.ske.panspermia.event.Events

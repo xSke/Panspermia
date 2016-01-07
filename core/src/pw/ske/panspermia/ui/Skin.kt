@@ -13,25 +13,25 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 
 object Skin : Skin() {
     init {
-        val font = BitmapFont(Gdx.files.internal("font.fnt"))
+        val font = BitmapFont(Gdx.files.internal("font/font.fnt"))
         add("default", font)
 
-        val fontsmall = BitmapFont(Gdx.files.internal("font.fnt"))
+        val fontsmall = BitmapFont(Gdx.files.internal("font/font.fnt"))
         fontsmall.data.setScale(0.666666666f)
         add("small", fontsmall)
 
-        val blueup = NinePatch(Texture("blueup.9.png"), 14, 14, 14, 14)
-        val bluedown = NinePatch(Texture("bluedown.9.png"), 14, 14, 14, 14)
+        val blueup = NinePatch(Texture("ui/blueup.9.png"), 14, 14, 14, 14)
+        val bluedown = NinePatch(Texture("ui/bluedown.9.png"), 14, 14, 14, 14)
         val bdu = NinePatchDrawable(blueup)
         val bdd = NinePatchDrawable(bluedown)
 
-        val redup = NinePatch(Texture("redup.9.png"), 14, 14, 14, 14)
-        val reddown = NinePatch(Texture("reddown.9.png"), 14, 14, 14, 14)
+        val redup = NinePatch(Texture("ui/redup.9.png"), 14, 14, 14, 14)
+        val reddown = NinePatch(Texture("ui/reddown.9.png"), 14, 14, 14, 14)
         val rdu = NinePatchDrawable(redup)
         val rdd = NinePatchDrawable(reddown)
 
-        val greyup = NinePatch(Texture("greyup.9.png"), 14, 14, 14, 14)
-        val greydown = NinePatch(Texture("greydown.9.png"), 14, 14, 14, 14)
+        val greyup = NinePatch(Texture("ui/greyup.9.png"), 14, 14, 14, 14)
+        val greydown = NinePatch(Texture("ui/greydown.9.png"), 14, 14, 14, 14)
         val gdu = NinePatchDrawable(greyup)
         val gdd = NinePatchDrawable(greydown)
 

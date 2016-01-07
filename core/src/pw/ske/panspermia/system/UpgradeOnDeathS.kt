@@ -3,8 +3,8 @@ package pw.ske.panspermia.system
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.gdx.utils.Timer
 import pw.ske.panspermia.Panspermia
-import pw.ske.panspermia.Play
-import pw.ske.panspermia.Upgrade
+import pw.ske.panspermia.screen.Play
+import pw.ske.panspermia.screen.Upgrade
 import pw.ske.panspermia.event.Events
 
 object UpgradeOnDeathS: EntitySystem() {

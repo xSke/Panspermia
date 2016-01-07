@@ -12,7 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import pw.ske.panspermia.GameState
 import pw.ske.panspermia.Panspermia
-import pw.ske.panspermia.Play
+import pw.ske.panspermia.screen.Generating
+import pw.ske.panspermia.screen.Play
 
 object UpgradeUI : Stage(ScreenViewport()) {
     var speedLevel = 1
@@ -24,7 +25,7 @@ object UpgradeUI : Stage(ScreenViewport()) {
         addListener(object: ClickListener(Input.Buttons.LEFT) {
             override fun clicked(event: InputEvent, x: Float, y: Float) {
                 // Kotlin doesn't like protected fields, don't autofix this
-                Panspermia.setScreen(Play)
+                Panspermia.setScreen(Generating)
             }
         })
     }

@@ -11,12 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import pw.ske.panspermia.GameState
-import pw.ske.panspermia.Play
+import pw.ske.panspermia.screen.Play
 import pw.ske.panspermia.component.HealthC
 
 object HUDUI : Stage(ScreenViewport()) {
     var counter = 0f
-    val anim = Animation(0.04f, *TextureRegion.split(Texture("sperm.png"), 16, 16)[0]).apply {
+    val anim = Animation(0.04f, *TextureRegion.split(Texture("sprites/sperm.png"), 16, 16)[0]).apply {
         playMode = Animation.PlayMode.LOOP
     }
 
@@ -42,9 +42,14 @@ object HUDUI : Stage(ScreenViewport()) {
     override fun act(delta: Float) {
         super.act(delta)
 
-        healthText.setText("x" + MathUtils.floor(Play.player.getComponent(HealthC::class.java).health))
+        val hp = MathUtils.floor(Play.player.getComponent(HealthC::class.java).health)
+        healthText.setText(if (hp > 0) {
+            counter += delta
+            "x" + hp
+        } else {
+            "rip"
+        })
 
-        counter += delta
 
         (healthSperm.drawable as TextureRegionDrawable).region = anim.getKeyFrame(counter)
 

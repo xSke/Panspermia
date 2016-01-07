@@ -1,4 +1,4 @@
-package pw.ske.panspermia
+package pw.ske.panspermia.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter

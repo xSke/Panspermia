@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.EdgeShape
 import com.badlogic.gdx.physics.box2d.PolygonShape
 import pw.ske.panspermia.EntityCreator
-import pw.ske.panspermia.Play
+import pw.ske.panspermia.screen.Play
 import pw.ske.panspermia.body
 import pw.ske.panspermia.util.Category
 import java.util.*
@@ -44,10 +44,6 @@ data class Map(val map: Array<Array<Boolean>>, val start: GridPoint2, val end: G
 
         shape.dispose()
         box.dispose()
-    }
-
-    fun placeEntities(amnt: Int) {
-        placeWallObjects(amnt)
     }
 
     fun neighbors8(x: Int, y: Int): Int {

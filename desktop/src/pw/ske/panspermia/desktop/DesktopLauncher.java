@@ -1,15 +1,13 @@
 package pw.ske.panspermia.desktop;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import pw.ske.panspermia.Panspermia;
 
 public class DesktopLauncher {
     public static void main(String[] arg) {
-        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.backgroundFPS = -1;
-        config.width = 800;
-        config.height = 600;
-        new LwjglApplication(Panspermia.INSTANCE, config);
+        Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+        config.setWindowedMode(1024, 768);
+        new Lwjgl3Application(Panspermia.INSTANCE, config);
     }
 }

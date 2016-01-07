@@ -4,7 +4,7 @@ import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import pw.ske.panspermia.util.NumericalSpringing
-import pw.ske.panspermia.Play
+import pw.ske.panspermia.screen.Play
 import pw.ske.panspermia.event.Events
 import pw.ske.panspermia.position
 

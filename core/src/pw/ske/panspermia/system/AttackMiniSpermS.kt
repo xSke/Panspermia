@@ -3,7 +3,7 @@ package pw.ske.panspermia.system
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.gdx.math.Vector2
 import pw.ske.panspermia.EntityCreator
-import pw.ske.panspermia.Play
+import pw.ske.panspermia.screen.Play
 import pw.ske.panspermia.body
 import pw.ske.panspermia.component.AttackMiniSpermC
 import pw.ske.panspermia.event.Events

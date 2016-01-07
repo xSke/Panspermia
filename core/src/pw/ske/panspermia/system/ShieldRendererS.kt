@@ -6,13 +6,13 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.MathUtils
-import pw.ske.panspermia.Play
+import pw.ske.panspermia.screen.Play
 import pw.ske.panspermia.component.BodyC
 import pw.ske.panspermia.component.ShieldC
 import pw.ske.panspermia.position
 
 object ShieldRendererS: IteratingSystem(Family.all(BodyC::class.java, ShieldC::class.java).get(), 1001) {
-    val shield = Texture("shield.png")
+    val shield = Texture("sprites/shield.png")
     override fun update(deltaTime: Float) {
         Play.batch.begin()
         super.update(deltaTime)

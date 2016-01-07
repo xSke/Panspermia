@@ -1,4 +1,4 @@
-package pw.ske.panspermia
+package pw.ske.panspermia.screen
 
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
@@ -15,13 +15,17 @@ import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.utils.Timer
+import pw.ske.panspermia.EntityCreator
+import pw.ske.panspermia.body
 import pw.ske.panspermia.component.BodyC
 import pw.ske.panspermia.gen.LevelGenerator
 import pw.ske.panspermia.gen.Map
+import pw.ske.panspermia.position
 import pw.ske.panspermia.system.*
 import pw.ske.panspermia.ui.HUDUI
 import pw.ske.panspermia.util.ContactFilter
 import pw.ske.panspermia.util.ContactListener
+import pw.ske.panspermia.util.Palette
 
 object Play : ScreenAdapter() {
     val engine = Engine().apply {
@@ -47,6 +51,7 @@ object Play : ScreenAdapter() {
         addSystem(PlayerMovementS)
         addSystem(PreAttackS)
         addSystem(RandomSpawnCellS)
+        addSystem(ScreenShakeOnAttackS)
         addSystem(ScreenShakeOnDamageS)
         addSystem(ScreenShakeOnDeathS)
         addSystem(ShieldRendererS)
@@ -77,32 +82,23 @@ object Play : ScreenAdapter() {
 
     lateinit var player: Entity
 
-    init {
-        show()
-    }
+    lateinit var palette: Palette
 
     override fun show() {
         engine.removeAllEntities()
 
-        world = World(Vector2(), true).apply {
-            setContactListener(ContactListener)
-            setContactFilter(ContactFilter)
-        }
-
-        map = LevelGenerator.genMap(100, 100).apply {
-            placeWorld()
-            placeEntities(100)
-            placeBoss()
-        }
+        palette = Palette.generate()
 
         player = EntityCreator.createPlayer().apply {
             position = Vector2(map.start.x.toFloat(), map.start.y.toFloat())
             engine.addEntity(this)
         }
+
+        Gdx.input.inputProcessor = null
     }
 
     override fun render(delta: Float) {
-        Gdx.gl.glClearColor(41 / 255f, 140 / 255f, 238 / 255f, 1f)
+        Gdx.gl.glClearColor(palette.backgroundColor.r, palette.backgroundColor.g, palette.backgroundColor.b, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         engine.update(delta)
