@@ -85,8 +85,6 @@ object Play : ScreenAdapter() {
     lateinit var palette: Palette
 
     override fun show() {
-        engine.removeAllEntities()
-
         palette = Palette.generate()
 
         player = EntityCreator.createPlayer().apply {

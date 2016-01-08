@@ -44,6 +44,8 @@ object Generating : ScreenAdapter() {
 
             }
             State.CREATE_WORLD -> {
+                Play.engine.removeAllEntities()
+
                 Play.world = World(Vector2(), true).apply {
                     setContactListener(ContactListener)
                     setContactFilter(ContactFilter)

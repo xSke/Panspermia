@@ -14,15 +14,18 @@ import pw.ske.panspermia.GameState
 import pw.ske.panspermia.Panspermia
 import pw.ske.panspermia.screen.Generating
 import pw.ske.panspermia.screen.Play
+import pw.ske.panspermia.stat.Stat
 
 object UpgradeUI : Stage(ScreenViewport()) {
     var speedLevel = 1
 
     val dnacount = Label("DNA: 0", Skin)
 
+    val buttons = hashMapOf<Stat<out Any>, TextButton>()
+
 
     val go = TextButton("Go", Skin, "blue").apply {
-        addListener(object: ClickListener(Input.Buttons.LEFT) {
+        addListener(object : ClickListener(Input.Buttons.LEFT) {
             override fun clicked(event: InputEvent, x: Float, y: Float) {
                 // Kotlin doesn't like protected fields, don't autofix this
                 Panspermia.setScreen(Generating)
@@ -47,7 +50,7 @@ object UpgradeUI : Stage(ScreenViewport()) {
             val label = Label(it.name + " lv." + it.level, Skin, "small")
 
             val button = TextButton("Upgrade (${it.nextLevelPrice} DNA)", Skin, if (GameState.dna >= it.nextLevelPrice) "blue" else "red").apply {
-                addListener(object: ClickListener(Input.Buttons.LEFT) {
+                addListener(object : ClickListener(Input.Buttons.LEFT) {
                     override fun clicked(event: InputEvent, x: Float, y: Float) {
                         if (GameState.dna >= it.nextLevelPrice || true) {
                             GameState.dna -= it.nextLevelPrice
@@ -64,7 +67,6 @@ object UpgradeUI : Stage(ScreenViewport()) {
                                 setText("Upgrade (" + it.nextLevelPrice + " DNA)")
                                 style = Skin.get(if (GameState.dna >= it.nextLevelPrice) "blue" else "red", TextButton.TextButtonStyle::class.java)
                             }
-
                         }
                     }
                 })
@@ -77,6 +79,7 @@ object UpgradeUI : Stage(ScreenViewport()) {
                 table.row()
             }
             table.add(button).width(300f).center().padBottom(25f).row()
+            buttons.put(it, button)
         }
 
         table.add(go).colspan(2).expandY().bottom().right().width(100f)
@@ -86,5 +89,11 @@ object UpgradeUI : Stage(ScreenViewport()) {
         super.act(delta)
 
         dnacount.setText("DNA: " + GameState.dna)
+
+        buttons.forEach { stat, textButton ->
+            if (stat.level != stat.maxLevel) {
+                textButton.style = Skin.get(if (GameState.dna >= stat.nextLevelPrice) "blue" else "red", TextButton.TextButtonStyle::class.java)
+            }
+        }
     }
 }

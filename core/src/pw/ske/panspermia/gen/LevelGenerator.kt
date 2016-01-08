@@ -73,6 +73,10 @@ object LevelGenerator {
                             visited[xx][yy] = true
                             count++
 
+                            // Sometimes it randomly crashes with a stackoverflow, so we block it here
+                            // Don't know why
+                            if (count > 1000) return
+
                             if (xx < w - 1 && !visited[xx + 1][yy]) flood(xx + 1, yy)
                             if (xx > 0 && !visited[xx - 1][yy]) flood(xx - 1, yy)
                             if (yy < h - 1 && !visited[xx][yy + 1]) flood(xx, yy + 1)
@@ -87,9 +91,17 @@ object LevelGenerator {
         }
 
         visited = map.clone().map { it.clone() }
+        var count = 0
         fun flood(xx: Int, yy: Int) {
             visited[xx][yy] = true
             map[xx][yy] = true
+
+            count++
+
+            // Sometimes it randomly crashes with a stackoverflow, so we block it here
+            // Don't know why
+
+            if (count > 1000) return
 
             if (xx < w - 1 && !visited[xx + 1][yy]) flood(xx + 1, yy)
             if (xx > 0 && !visited[xx - 1][yy]) flood(xx - 1, yy)

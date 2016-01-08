@@ -36,5 +36,5 @@ void main() {
     // This mod thingy breaks white stuff
     //fragHSV.xyz = mod(fragHSV.xyz, 1.0);
     fragRGB = hsv2rgb(fragHSV);
-    gl_FragColor = vec4(fragRGB, textureColor.w);
+    gl_FragColor = v_color * vec4(fragRGB, textureColor.w);
 }

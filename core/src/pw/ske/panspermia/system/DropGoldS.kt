@@ -14,6 +14,7 @@ object DropGoldS: EntitySystem() {
             if (dg != null) {
                 (0..dg.gold-1).forEach {
                     val gold = EntityCreator.createDNA()
+                    println(deathE.entity.position)
                     gold.position = deathE.entity.position
 
                     Play.engine.addEntity(gold)

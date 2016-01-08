@@ -12,7 +12,7 @@ object GeneratingUI : Stage(ScreenViewport()) {
     val table = Table().apply {
         top()
         pad(20f)
-        add(title).expandX().center().row()
+        add(title).expandX().center().padBottom(10f).row()
         add(status).expandX().center()
 
         setFillParent(true)
