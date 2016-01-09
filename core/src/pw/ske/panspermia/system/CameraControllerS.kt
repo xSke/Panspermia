@@ -29,21 +29,23 @@ object CameraControllerS : EntitySystem(1) {
     }
 
     override fun update(deltaTime: Float) {
-        val pos = Vector2(Play.camera.position.x, Play.camera.position.y)
-        NumericalSpringing.springVector(pos.sub(lastScreenShake), velocity, Play.player.position, 1f, 8f, deltaTime)
-        Play.camera.position.set(pos, 0f)
+        if (!Play.playerDead) {
+            val pos = Vector2(Play.camera.position.x, Play.camera.position.y)
+            NumericalSpringing.springVector(pos.sub(lastScreenShake), velocity, Play.player.position, 1f, 8f, deltaTime)
+            Play.camera.position.set(pos, 0f)
 
-        if (screenShakeTime > 0f) {
-            val strength = if (fade) {
-                MathUtils.lerp(0f, screenShakeStrength, screenShakeTime / lastMaxScreenShakeTime)
+            if (screenShakeTime > 0f) {
+                val strength = if (fade) {
+                    MathUtils.lerp(0f, screenShakeStrength, screenShakeTime / lastMaxScreenShakeTime)
+                } else {
+                    screenShakeStrength
+                }
+                screenShakeTime -= deltaTime
+                lastScreenShake.set(Math.random().toFloat() * strength * 2 - strength, Math.random().toFloat() * strength * 2 - strength)
+                Play.camera.position.add(lastScreenShake.x, lastScreenShake.y, 0f)
             } else {
-                screenShakeStrength
+                lastScreenShake.setZero()
             }
-            screenShakeTime -= deltaTime
-            lastScreenShake.set(Math.random().toFloat() * strength * 2 - strength, Math.random().toFloat() * strength * 2 - strength)
-            Play.camera.position.add(lastScreenShake.x, lastScreenShake.y, 0f)
-        } else {
-            lastScreenShake.setZero()
         }
 
         Play.camera.update()

@@ -59,7 +59,6 @@ object EntityCreator {
         entity.add(SoundOnDamageC(hurtSound))
         entity.add(SoundOnAttackC(shootSound))
         entity.add(SoundOnDeathC(deathSound))
-        entity.add(ScreenShakeOnDeathC(1.5f, 2f, true))
         entity.add(ScreenShakeOnAttackC(0.05f, 0.1f))
 
         if (GameState.shield.value > 0) {
@@ -85,6 +84,7 @@ object EntityCreator {
         entity.add(BodyC(body))
         entity.add(FilterC(Category.Scenery))
         entity.add(SpriteC(sprite))
+        entity.add(DontClearC())
         return entity
     }
 
@@ -142,6 +142,41 @@ object EntityCreator {
         if (homing) {
             entity.add(HomingOnPlayerC(10f, 100f))
         }
+        return entity
+    }
+
+    fun createVortex(): Entity {
+        val body = Play.world.createBody(BodyDef())
+        body.type = BodyDef.BodyType.DynamicBody
+        body.angularVelocity = Math.random().toFloat() * 3
+        body.linearDamping = 10f
+
+        val anim = Animation(0.1f, *TextureRegion.split(Texture("sprites/vortex.png"), 32, 32)[0])
+        anim.playMode = Animation.PlayMode.LOOP
+
+        val sprite = AnimatedSprite(anim)
+        sprite.time = Math.random().toFloat()
+        sprite.setSize(2f, 2f)
+        sprite.setOriginCenter()
+
+        val shape = CircleShape()
+        shape.radius = 1f
+
+        val fix = body.createFixture(shape, 1f)
+
+        val deathSound = Gdx.audio.newSound(Gdx.files.internal("audio/kill.wav"))
+
+        val entity = Entity()
+        body.userData = entity
+        entity.add(BodyC(body))
+        entity.add(FilterC(Category.Cell))
+        entity.add(SpriteC(sprite))
+        entity.add(HealthC(30f))
+        entity.add(BulletDeathC(15f, 100))
+        entity.add(SoundOnDeathC(deathSound))
+        entity.add(ScreenShakeOnDeathC(0.8f, 0.2f, false))
+        entity.add(DropGoldC(30))
+        entity.add(AttractPlayerC(15f, 4f))
         return entity
     }
 
@@ -216,6 +251,7 @@ object EntityCreator {
         entity.add(BodyC(body))
         entity.add(FilterC(Category.BossCell))
         entity.add(SpriteC(sprite))
+        entity.add(DontClearC())
         return entity
     }
 
@@ -239,6 +275,7 @@ object EntityCreator {
         entity.add(FilterC(Category.BossShield))
         entity.add(SpriteC(sprite))
         entity.add(HealthC(300f))
+        entity.add(DontClearC())
         return entity
     }
 
@@ -262,6 +299,7 @@ object EntityCreator {
         entity.add(AttackPeriodicallyC(2f, 0.15f, Math.random().toFloat() * 2f))
         entity.add(PlayAnimationOnPreAttackC())
         entity.add(AttackShootProjectileC(10f, listOf(Vector2(0f, 0.5f)), false, true))
+        entity.add(DontClearC())
         return entity
     }
 
@@ -284,6 +322,7 @@ object EntityCreator {
         entity.add(AttackPeriodicallyC(1f, 0.15f, Math.random().toFloat() * 1f))
         entity.add(PlayAnimationOnPreAttackC())
         entity.add(AttackShootProjectileC(10f, listOf(Vector2(0f, 0.5f)), true))
+        entity.add(DontClearC())
         return entity
     }
 
@@ -322,7 +361,7 @@ object EntityCreator {
         entity.add(BulletDeathC(15f, 100))
         entity.add(SoundOnDeathC(deathSound))
         entity.add(ScreenShakeOnDeathC(0.8f, 0.2f, false))
-        entity.add(DropGoldC(50))
+        entity.add(DropGoldC(20))
         return entity
     }
 

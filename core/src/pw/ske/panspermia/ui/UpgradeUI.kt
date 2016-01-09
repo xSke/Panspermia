@@ -28,7 +28,7 @@ object UpgradeUI : Stage(ScreenViewport()) {
         addListener(object : ClickListener(Input.Buttons.LEFT) {
             override fun clicked(event: InputEvent, x: Float, y: Float) {
                 // Kotlin doesn't like protected fields, don't autofix this
-                Panspermia.setScreen(Generating)
+                Panspermia.setScreen(Play)
             }
         })
     }

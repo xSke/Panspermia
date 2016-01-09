@@ -8,9 +8,13 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.glutils.FrameBuffer
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.physics.box2d.World
@@ -18,6 +22,7 @@ import com.badlogic.gdx.utils.Timer
 import pw.ske.panspermia.EntityCreator
 import pw.ske.panspermia.body
 import pw.ske.panspermia.component.BodyC
+import pw.ske.panspermia.component.DontClearC
 import pw.ske.panspermia.gen.LevelGenerator
 import pw.ske.panspermia.gen.Map
 import pw.ske.panspermia.position
@@ -33,6 +38,7 @@ object Play : ScreenAdapter() {
         addSystem(AttackOnClickS)
         addSystem(AttackPeriodicallyS)
         addSystem(AttackShootProjectileS)
+        addSystem(AttractPlayerS)
         addSystem(BulletDeathS)
         addSystem(CameraControllerS)
         addSystem(DamageOnTouchS)
@@ -78,14 +84,38 @@ object Play : ScreenAdapter() {
 
     val camera = OrthographicCamera()
 
+    var globalSaturation: Float = 1f
+    var globalValue: Float = 1f
+    var globalSpeed: Float = 1f
+    var playerDead = false
+
     lateinit var map: Map
 
     lateinit var player: Entity
 
     lateinit var palette: Palette
 
+    val fbo = FrameBuffer(Pixmap.Format.RGBA8888, 2048, 2048, false)
+
+    val hueShiftShader = ShaderProgram(Gdx.files.internal("shaders/default.vert"), Gdx.files.internal("shaders/hsv_shift.frag"))
+
+    init {
+        if (hueShiftShader.log.length > 0) {
+            println(hueShiftShader.log)
+        }
+    }
+
     override fun show() {
-        palette = Palette.generate()
+        globalSaturation = 1f
+        globalValue = 1f
+        globalSpeed = 1f
+        playerDead = false
+
+        engine.entities.forEach {
+            if (it.getComponent(DontClearC::class.java) == null) {
+                engine.removeEntity(it)
+            }
+        }
 
         player = EntityCreator.createPlayer().apply {
             position = Vector2(map.start.x.toFloat(), map.start.y.toFloat())
@@ -96,10 +126,20 @@ object Play : ScreenAdapter() {
     }
 
     override fun render(delta: Float) {
+        fbo.begin()
         Gdx.gl.glClearColor(palette.backgroundColor.r, palette.backgroundColor.g, palette.backgroundColor.b, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-        engine.update(delta)
+        engine.update(delta * globalSpeed)
+        fbo.end()
+
+        batch.projectionMatrix.setToOrtho2D(0f, Gdx.graphics.height.toFloat(), Gdx.graphics.width.toFloat(), -Gdx.graphics.height.toFloat())
+
+        batch.shader = hueShiftShader
+        batch.begin()
+        hueShiftShader.setUniformf("vHSV", Vector3(0f, globalSaturation, globalValue))
+        batch.draw(fbo.colorBufferTexture, 0f, 0f, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+        batch.end()
 
         HUDUI.act(delta)
         HUDUI.draw()

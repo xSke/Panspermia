@@ -11,6 +11,7 @@ import pw.ske.panspermia.gen.Map
 import pw.ske.panspermia.ui.GeneratingUI
 import pw.ske.panspermia.util.ContactFilter
 import pw.ske.panspermia.util.ContactListener
+import pw.ske.panspermia.util.Palette
 
 object Generating : ScreenAdapter() {
     enum class State {
@@ -39,9 +40,11 @@ object Generating : ScreenAdapter() {
 
         when (state) {
             State.INIT -> {
-                state = State.CREATE_WORLD
-                GeneratingUI.status.setText("Creating world...")
+                Play.palette = Palette.generate()
 
+                state = State.CREATE_WORLD
+
+                GeneratingUI.status.setText("Creating world...")
             }
             State.CREATE_WORLD -> {
                 Play.engine.removeAllEntities()

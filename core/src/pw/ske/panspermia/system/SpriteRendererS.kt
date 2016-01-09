@@ -15,14 +15,6 @@ import pw.ske.panspermia.component.SpriteC
 import pw.ske.panspermia.position
 
 object SpriteRendererS : IteratingSystem(Family.all(BodyC::class.java, SpriteC::class.java).get(), 1000) {
-    val hueShiftShader = ShaderProgram(Gdx.files.internal("shaders/default.vert"), Gdx.files.internal("shaders/hsv_shift.frag"))
-
-    init {
-        if (hueShiftShader.log.length > 0) {
-            println(hueShiftShader.log)
-        }
-    }
-
     override fun update(deltaTime: Float) {
         Play.batch.begin()
         super.update(deltaTime)
@@ -37,14 +29,14 @@ object SpriteRendererS : IteratingSystem(Family.all(BodyC::class.java, SpriteC::
         sprite.rotation = entity.body.angle * MathUtils.radiansToDegrees
 
         // If the lightness is 1f it starts fucking up so idk whats goin on here
-        hueShiftShader.setUniformf("vHSV", Vector3(Play.palette.hueShift, 1f, 1f))
+        Play.hueShiftShader.setUniformf("vHSV", Vector3(Play.palette.hueShift, 1f, 1f))
 
         if (sc.hueShift) {
-            if (Play.batch.shader != hueShiftShader) {
-                Play.batch.shader = hueShiftShader
+            if (Play.batch.shader != Play.hueShiftShader) {
+                Play.batch.shader = Play.hueShiftShader
             }
         } else {
-            if (Play.batch.shader == hueShiftShader) {
+            if (Play.batch.shader == Play.hueShiftShader) {
                 Play.batch.shader = null
             }
         }
