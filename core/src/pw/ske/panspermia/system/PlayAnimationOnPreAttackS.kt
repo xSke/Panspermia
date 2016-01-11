@@ -8,7 +8,7 @@ import pw.ske.panspermia.event.Events
 
 object PlayAnimationOnPreAttackS: EntitySystem() {
     init {
-        Events.PreAttack.add { preAttackE ->
+        Events.PreAttack.register { preAttackE ->
             if (preAttackE.entity.getComponent(PlayAnimationOnPreAttackC::class.java) != null) {
                 (preAttackE.entity.getComponent(SpriteC::class.java).sprite as AnimatedSprite).play()
                 (preAttackE.entity.getComponent(SpriteC::class.java).sprite as AnimatedSprite).time = 0f

@@ -48,6 +48,7 @@ object Play : ScreenAdapter() {
         addSystem(DestroyOnTouchS)
         addSystem(DropGoldS)
         addSystem(HomingOnPlayerS)
+        addSystem(KillIfDiesS)
         addSystem(KillOnHealthZeroS)
         addSystem(KnockbackS)
         addSystem(MapRendererS)

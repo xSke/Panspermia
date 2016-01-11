@@ -11,7 +11,7 @@ object PickUpGoldS: EntitySystem() {
     val sound = Gdx.audio.newSound(Gdx.files.internal("audio/coin.wav"))
 
     init {
-        Events.EntityTouchFixture.add { entityTouchFixtureE ->
+        Events.EntityTouchFixture.register { entityTouchFixtureE ->
             val g = entityTouchFixtureE.entity.getComponent(GoldC::class.java)
 
             if (g != null) {

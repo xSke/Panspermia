@@ -11,7 +11,7 @@ import pw.ske.panspermia.position
 
 object BulletDeathS : EntitySystem() {
     init {
-        Events.Death.add { deathE ->
+        Events.Death.register { deathE ->
             val bd = deathE.entity.getComponent(BulletDeathC::class.java)
             if (bd != null) {
                 (0..bd.amount-1).forEach {

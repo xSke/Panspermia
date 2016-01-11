@@ -11,7 +11,7 @@ import pw.ske.panspermia.position
 
 object AttackMiniSpermS: EntitySystem() {
     init {
-        Events.Attack.add { attackE ->
+        Events.Attack.register { attackE ->
             val ams = attackE.entity.getComponent(AttackMiniSpermC::class.java)
             val spread = 5
 

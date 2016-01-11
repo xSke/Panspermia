@@ -12,7 +12,7 @@ object DestroyOnTouchS : EntitySystem() {
     val toKill = arrayListOf<Entity>()
 
     init {
-        Events.EntityTouchFixture.add { entityTouchFixtureE ->
+        Events.EntityTouchFixture.register { entityTouchFixtureE ->
             val kot = entityTouchFixtureE.entity.getComponent(DestroyOnTouchC::class.java)
             if (kot != null) {
                 if (Category.matches(Category.getCategory(entityTouchFixtureE.fixture), kot.destroyFilter)) {

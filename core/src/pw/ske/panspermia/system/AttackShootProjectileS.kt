@@ -11,7 +11,7 @@ import pw.ske.panspermia.position
 
 object AttackShootProjectileS: EntitySystem() {
     init {
-        Events.Attack.add { attackE ->
+        Events.Attack.register { attackE ->
             val asp = attackE.entity.getComponent(AttackShootProjectileC::class.java)
             if (asp != null) {
                 asp.offset.forEach { offset ->

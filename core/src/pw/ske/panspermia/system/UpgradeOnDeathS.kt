@@ -8,12 +8,12 @@ import pw.ske.panspermia.screen.Play
 import pw.ske.panspermia.screen.Upgrade
 import pw.ske.panspermia.event.Events
 
-object UpgradeOnDeathS: EntitySystem() {
+object UpgradeOnDeathS : EntitySystem() {
     var switch = false
     var timer = 0f
 
     init {
-        Events.Death.add {  deathE ->
+        Events.Death.register { deathE ->
             if (deathE.entity == Play.player) {
                 switch = true
             }
@@ -26,18 +26,18 @@ object UpgradeOnDeathS: EntitySystem() {
             Play.playerDead = true
             timer += deltaTime / Play.globalSpeed
 
-            if (timer > 1) {
-                val v = MathUtils.clamp(MathUtils.lerp(1f, 0f, (timer - 1) / 2f), 0f, 1f)
-                Play.globalSaturation = v
-                Play.globalValue = v
-                Play.globalSpeed = v * 0.75f + 0.25f
+            val v1 = MathUtils.clamp(MathUtils.lerp(1f, 0.1f, timer / 2f), 0.1f, 1f)
+            val v2 = MathUtils.clamp(MathUtils.lerp(1f, 0f, (timer - 1) / 2f), 0f, 1f)
 
-                if (timer > 4f) {
-                    timer = 0f
-                    switch = false
+            Play.globalSpeed = v1
+            Play.globalSaturation = v2
+            Play.globalValue = v2
 
-                    Panspermia.setScreen(Upgrade)
-                }
+            if (timer > 4f) {
+                timer = 0f
+                switch = false
+
+                Panspermia.setScreen(Upgrade)
             }
         }
     }

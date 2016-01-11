@@ -7,7 +7,7 @@ import pw.ske.panspermia.event.ScreenShakeE
 
 object ScreenShakeOnDeathS: EntitySystem() {
     init {
-        Events.Death.add { deathE ->
+        Events.Death.register { deathE ->
             val ssod = deathE.entity.getComponent(ScreenShakeOnDeathC::class.java)
             if (ssod != null) {
                 Events.ScreenShake.dispatch(ScreenShakeE(ssod.strength, ssod.time, ssod.fade))

@@ -7,7 +7,7 @@ import pw.ske.panspermia.event.Events
 
 object SoundOnDeathS: EntitySystem() {
     init {
-        Events.Death.add { deathE ->
+        Events.Death.register { deathE ->
             val sod = deathE.entity.getComponent(SoundOnDeathC::class.java)
             if (sod != null) {
                 sod.sound.play()

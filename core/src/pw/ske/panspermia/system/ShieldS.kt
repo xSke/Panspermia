@@ -10,7 +10,7 @@ import pw.ske.panspermia.event.Events
 
 object ShieldS : IteratingSystem(Family.all(BodyC::class.java, ShieldC::class.java).get()) {
     init {
-        Events.Damage.add(-1) {
+        Events.Damage.register(-1) {
             val s = it.entity.getComponent(ShieldC::class.java)
 
             if (s != null) {
@@ -35,7 +35,7 @@ object ShieldS : IteratingSystem(Family.all(BodyC::class.java, ShieldC::class.ja
             }
         }
 
-        Events.Attack.add {
+        Events.Attack.register {
             val s = it.entity.getComponent(ShieldC::class.java)
 
             if (s != null) {

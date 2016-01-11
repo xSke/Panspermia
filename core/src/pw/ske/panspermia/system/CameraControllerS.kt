@@ -19,7 +19,7 @@ object CameraControllerS : EntitySystem(1) {
     var lastScreenShake = Vector2()
 
     init {
-        Events.ScreenShake.add { screenShakeE ->
+        Events.ScreenShake.register { screenShakeE ->
             screenShakeStrength = screenShakeE.strength
             screenShakeTime = screenShakeE.time
             lastMaxScreenShakeTime = screenShakeE.time

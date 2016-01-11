@@ -17,7 +17,7 @@ object AttractPlayerS: IteratingSystem(Family.all(BodyC::class.java, AttractPlay
 
         if (vec.len2() < ap.distance * ap.distance) {
             val force = (ap.distance * ap.distance - vec.len2()) / (ap.distance * ap.distance)
-            vec.nor().scl(force).scl(ap.force)
+            vec.nor().scl(force).scl(ap.force).scl(deltaTime)
 
             Play.player.body.applyLinearImpulse(vec, Play.player.position, true)
         }

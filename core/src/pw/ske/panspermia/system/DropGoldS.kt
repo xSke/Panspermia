@@ -9,7 +9,7 @@ import pw.ske.panspermia.position
 
 object DropGoldS: EntitySystem() {
     init {
-        Events.Death.add(-1) { deathE ->
+        Events.Death.register(-1) { deathE ->
             val dg = deathE.entity.getComponent(DropGoldC::class.java)
             if (dg != null) {
                 (0..dg.gold-1).forEach {

@@ -7,7 +7,7 @@ import pw.ske.panspermia.event.ScreenShakeE
 
 object ScreenShakeOnDamageS: EntitySystem() {
     init {
-        Events.Damage.add { damageE ->
+        Events.Damage.register { damageE ->
             val ssod = damageE.entity.getComponent(ScreenShakeOnDamageC::class.java)
             if (ssod != null) {
                 Events.ScreenShake.dispatch(ScreenShakeE(ssod.strength, ssod.time, false))

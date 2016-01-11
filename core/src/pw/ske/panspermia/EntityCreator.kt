@@ -11,14 +11,13 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.CircleShape
-import com.badlogic.gdx.physics.box2d.Filter
 import com.badlogic.gdx.physics.box2d.PolygonShape
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef
 import net.dermetfan.gdx.graphics.g2d.AnimatedSprite
 import pw.ske.panspermia.component.*
 import pw.ske.panspermia.screen.Play
-import pw.ske.panspermia.util.*
+import pw.ske.panspermia.util.Category
 
 object EntityCreator {
     fun createPlayer(): Entity {
@@ -41,6 +40,7 @@ object EntityCreator {
         shape.radius = 0.15f
         shape.position = Vector2(0f, 0.3f)
         val sensor = body.createFixture(shape, 1f)
+        shape.dispose()
 
         val hurtSound = Gdx.audio.newSound(Gdx.files.internal("audio/hurt.wav"))
         val shootSound = Gdx.audio.newSound(Gdx.files.internal("audio/shoot.wav"))
@@ -104,6 +104,7 @@ object EntityCreator {
 
         val fix = body.createFixture(shape, 1f)
         fix.isSensor = true
+        shape.dispose()
 
         val entity = Entity()
         body.userData = entity
@@ -111,7 +112,7 @@ object EntityCreator {
         entity.add(FilterC(Category.PlayerProjectile))
         entity.add(SpriteC(sprite))
         entity.add(DestroyOnTouchC(setOf(Category.Wall)))
-        entity.add(DamageOnTouchC(1f, true))
+        entity.add(DamageOnTouchC(GameState.damage.value, true))
         return entity
     }
 
@@ -128,6 +129,7 @@ object EntityCreator {
 
         val fix = body.createFixture(shape, 1f)
         fix.isSensor = true
+        shape.dispose()
 
         val entity = Entity()
         body.userData = entity
@@ -163,6 +165,7 @@ object EntityCreator {
         shape.radius = 1f
 
         val fix = body.createFixture(shape, 1f)
+        shape.dispose()
 
         val deathSound = Gdx.audio.newSound(Gdx.files.internal("audio/kill.wav"))
 
@@ -176,7 +179,8 @@ object EntityCreator {
         entity.add(SoundOnDeathC(deathSound))
         entity.add(ScreenShakeOnDeathC(0.8f, 0.2f, false))
         entity.add(DropGoldC(30))
-        entity.add(AttractPlayerC(15f, 4f))
+        entity.add(AttractPlayerC(15f, 200f))
+        entity.add(DamageOnTouchC(999f, false))
         return entity
     }
 
@@ -204,6 +208,8 @@ object EntityCreator {
                     it * (360f / i) * MathUtils.degreesToRadians
             )
             Play.engine.addEntity(cannon)
+
+            cannon.add(KillIfDiesC(seg))
 
             val cannonJoint = WeldJointDef()
             cannonJoint.initialize(seg.body, cannon.body, seg.position.add(Vector2(0f, 0.25f).rotate(it * (360f / i))))
@@ -245,6 +251,12 @@ object EntityCreator {
         shape.setAsBox(1.5f, 1.5f)
 
         val fix = body.createFixture(shape, 1f)
+        shape.dispose()
+
+        val innerShape = CircleShape()
+        innerShape.radius = 0.25f
+        val innerFix = body.createFixture(innerShape, 1f)
+        innerShape.dispose()
 
         val entity = Entity()
         body.userData = entity
@@ -252,6 +264,7 @@ object EntityCreator {
         entity.add(FilterC(Category.BossCell))
         entity.add(SpriteC(sprite))
         entity.add(DontClearC())
+        entity.add(WinPlayerTouchC(innerFix))
         return entity
     }
 
@@ -268,13 +281,14 @@ object EntityCreator {
         shape.setAsBox(0.5f, 0.25f)
 
         val fix = body.createFixture(shape, 1f)
+        shape.dispose()
 
         val entity = Entity()
         body.userData = entity
         entity.add(BodyC(body))
         entity.add(FilterC(Category.BossShield))
         entity.add(SpriteC(sprite))
-        entity.add(HealthC(300f))
+        entity.add(HealthC(1000f))
         entity.add(DontClearC())
         return entity
     }
@@ -298,7 +312,7 @@ object EntityCreator {
         entity.add(SpriteC(sprite))
         entity.add(AttackPeriodicallyC(2f, 0.15f, Math.random().toFloat() * 2f))
         entity.add(PlayAnimationOnPreAttackC())
-        entity.add(AttackShootProjectileC(10f, listOf(Vector2(0f, 0.5f)), false, true))
+        entity.add(AttackShootProjectileC(10f, listOf(Vector2(0f, 0.5f)), true, false))
         entity.add(DontClearC())
         return entity
     }
@@ -344,6 +358,7 @@ object EntityCreator {
         shape.radius = 1f
 
         val fix = body.createFixture(shape, 1f)
+        shape.dispose()
         val offset = Math.random().toFloat() * 1f
 
         val deathSound = Gdx.audio.newSound(Gdx.files.internal("audio/kill.wav"))
@@ -377,6 +392,7 @@ object EntityCreator {
         shape.radius = 0.0625f
 
         val fix = body.createFixture(shape, 1f)
+        shape.dispose()
         //fix.isSensor = true
 
         val entity = Entity()

@@ -7,7 +7,7 @@ import pw.ske.panspermia.position
 
 object KnockbackS: EntitySystem() {
     init {
-        Events.Damage.add {
+        Events.Damage.register {
             val vec = it.source!!.body.linearVelocity.nor().scl(1f)
             it.entity.body.applyLinearImpulse(vec, it.entity.position, true)
             false

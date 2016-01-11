@@ -12,7 +12,7 @@ object DamageOnTouchS: EntitySystem() {
     var toKill = arrayListOf<Entity>()
 
     init {
-        Events.EntityTouchFixture.add { entityTouchFixtureE ->
+        Events.EntityTouchFixture.register { entityTouchFixtureE ->
             val dot = entityTouchFixtureE.entity.getComponent(DamageOnTouchC::class.java)
             if (dot != null) {
                 if (entityTouchFixtureE.fixture.body.userData is Entity) {
