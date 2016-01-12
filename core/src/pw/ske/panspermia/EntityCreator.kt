@@ -254,7 +254,7 @@ object EntityCreator {
         val shape = PolygonShape()
         shape.setAsBox(1.5f, 1.5f)
 
-        val fix = body.createFixture(shape, 1f)
+        //val fix = body.createFixture(shape, 1f)
         shape.dispose()
 
         val innerShape = CircleShape()

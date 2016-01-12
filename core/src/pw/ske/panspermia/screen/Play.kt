@@ -149,7 +149,7 @@ object Play : ScreenAdapter() {
         HUDUI.act(delta)
         HUDUI.draw()
 
-        //Box2DDebugRenderer().render(world, camera.combined)
+        Box2DDebugRenderer().render(world, camera.combined)
     }
 
     override fun resize(width: Int, height: Int) {
