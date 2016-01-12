@@ -1,5 +1,6 @@
 package pw.ske.panspermia.ui
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -23,10 +24,13 @@ object UpgradeUI : Stage(ScreenViewport()) {
 
     val buttons = hashMapOf<Stat<out Any>, TextButton>()
 
+    val blip = Gdx.audio.newSound(Gdx.files.internal("audio/blip.wav"))
 
     val go = TextButton("Go", Skin, "blue").apply {
         addListener(object : ClickListener(Input.Buttons.LEFT) {
             override fun clicked(event: InputEvent, x: Float, y: Float) {
+                blip.play()
+
                 // Kotlin doesn't like protected fields, don't autofix this
                 Panspermia.setScreen(Play)
             }
@@ -52,6 +56,8 @@ object UpgradeUI : Stage(ScreenViewport()) {
             val button = TextButton("Upgrade (${it.nextLevelPrice} DNA)", Skin, if (GameState.dna >= it.nextLevelPrice) "blue" else "red").apply {
                 addListener(object : ClickListener(Input.Buttons.LEFT) {
                     override fun clicked(event: InputEvent, x: Float, y: Float) {
+                        blip.play()
+
                         if (GameState.dna >= it.nextLevelPrice || true) {
                             GameState.dna -= it.nextLevelPrice
                             it.level++

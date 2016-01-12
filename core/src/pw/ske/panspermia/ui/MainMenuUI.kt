@@ -1,5 +1,6 @@
 package pw.ske.panspermia.ui
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -16,9 +17,11 @@ import pw.ske.panspermia.screen.Generating
 
 object MainMenuUI : Stage(ScreenViewport()) {
     val logo = Image(Texture("ui/logo.png"))
+    val blip = Gdx.audio.newSound(Gdx.files.internal("audio/blip.wav"))
     val button = TextButton("Play", Skin, "blue").apply {
         addListener(object : ClickListener(Input.Buttons.LEFT) {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                blip.play()
                 Panspermia.setScreen(Generating)
             }
         })

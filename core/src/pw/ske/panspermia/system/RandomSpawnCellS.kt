@@ -9,10 +9,11 @@ import pw.ske.panspermia.position
 
 object RandomSpawnCellS: IntervalSystem(1.5f) {
     override fun updateInterval() {
-        val cell = if (Math.random() < 0.5) {
+        val cell = if (Math.random() < 0.7) {
             EntityCreator.createCell()
         } else {
             EntityCreator.createVortex()
+
         }
 
         val pos = GridPoint2()

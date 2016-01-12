@@ -18,6 +18,8 @@ import net.dermetfan.gdx.graphics.g2d.AnimatedSprite
 import pw.ske.panspermia.component.*
 import pw.ske.panspermia.screen.Play
 import pw.ske.panspermia.util.Category
+import kotlin.collections.forEach
+import kotlin.collections.setOf
 
 object EntityCreator {
     fun createPlayer(): Entity {
