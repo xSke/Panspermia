@@ -91,6 +91,9 @@ data class Map(val map: Array<Array<Boolean>>, val start: GridPoint2, val end: G
             val pos = GridPoint2()
             while (map[pos.x][pos.y]) {
                 pos.set((Math.random() * width).toInt(), (Math.random() * width).toInt())
+
+                val distToStart = Math.sqrt(((pos.x - start.x) * (pos.x - start.x) + (pos.y - start.y) * (pos.y - start.y)).toDouble())
+                if (distToStart < 20) continue
             }
             pos
         }.forEach {
