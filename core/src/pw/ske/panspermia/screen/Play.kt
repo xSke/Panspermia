@@ -47,6 +47,7 @@ object Play : ScreenAdapter() {
         addSystem(DeathS)
         addSystem(DestroyOnTouchS)
         addSystem(DropGoldS)
+        addSystem(EggFinderS)
         addSystem(HomingOnPlayerS)
         addSystem(KillIfDiesS)
         addSystem(KillOnHealthZeroS)
@@ -68,6 +69,7 @@ object Play : ScreenAdapter() {
         addSystem(SoundOnDeathS)
         addSystem(SpriteRendererS)
         addSystem(UpgradeOnDeathS)
+        addSystem(WinPlayerTouchS)
 
         addEntityListener(Family.all(BodyC::class.java).get(), object : EntityListener {
             override fun entityAdded(entity: Entity) {
@@ -89,6 +91,8 @@ object Play : ScreenAdapter() {
     var globalValue: Float = 1f
     var globalSpeed: Float = 1f
     var playerDead = false
+
+    lateinit var egg: Entity
 
     lateinit var map: Map
 

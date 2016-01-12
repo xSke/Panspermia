@@ -18,8 +18,6 @@ import pw.ske.panspermia.screen.Play
 import pw.ske.panspermia.stat.Stat
 
 object UpgradeUI : Stage(ScreenViewport()) {
-    var speedLevel = 1
-
     val dnacount = Label("DNA: 0", Skin)
 
     val buttons = hashMapOf<Stat<out Any>, TextButton>()

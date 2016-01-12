@@ -181,7 +181,7 @@ object EntityCreator {
         entity.add(SoundOnDeathC(deathSound))
         entity.add(ScreenShakeOnDeathC(0.8f, 0.2f, false))
         entity.add(DropGoldC(30))
-        entity.add(AttractPlayerC(15f, 200f))
+        entity.add(AttractPlayerC(12f, 200f))
         entity.add(DamageOnTouchC(999f, false))
         return entity
     }
@@ -190,6 +190,8 @@ object EntityCreator {
         val bossCell = createBossCell()
         bossCell.position = Vector2(pos.x.toFloat(), pos.y.toFloat())
         Play.engine.addEntity(bossCell)
+
+        Play.egg = bossCell
 
         val i = 32
 
@@ -256,7 +258,7 @@ object EntityCreator {
         shape.dispose()
 
         val innerShape = CircleShape()
-        innerShape.radius = 0.25f
+        innerShape.radius = 0.5f
         val innerFix = body.createFixture(innerShape, 1f)
         innerShape.dispose()
 
@@ -267,6 +269,7 @@ object EntityCreator {
         entity.add(SpriteC(sprite))
         entity.add(DontClearC())
         entity.add(WinPlayerTouchC(innerFix))
+        entity.add(AttractPlayerC(0.3f, 100f))
         return entity
     }
 
