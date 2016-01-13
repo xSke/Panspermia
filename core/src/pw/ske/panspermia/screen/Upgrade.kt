@@ -3,6 +3,7 @@ package pw.ske.panspermia.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import pw.ske.panspermia.ui.UpgradeUI
 
 object Upgrade: ScreenAdapter() {

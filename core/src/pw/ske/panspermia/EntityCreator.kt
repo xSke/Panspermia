@@ -2,6 +2,7 @@ package pw.ske.panspermia
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Sprite
@@ -17,17 +18,25 @@ import com.badlogic.gdx.physics.box2d.joints.WeldJointDef
 import net.dermetfan.gdx.graphics.g2d.AnimatedSprite
 import pw.ske.panspermia.component.*
 import pw.ske.panspermia.screen.Play
+import pw.ske.panspermia.util.Assets
 import pw.ske.panspermia.util.Category
 import kotlin.collections.forEach
 import kotlin.collections.setOf
 
 object EntityCreator {
+    val splitSpermAnim = TextureRegion.split(Assets.manager.get("sprites/sperm.png"), 16, 16)
+    val splitPlantAnim = TextureRegion.split(Assets.manager.get("sprites/blazeit.png"), 16, 16)
+    val splitVortexAnim = TextureRegion.split(Assets.manager.get("sprites/vortex.png"), 32, 32)
+    val splitSmallCannonAnim = TextureRegion.split(Assets.manager.get("sprites/smallcannon.png"), 8, 8)
+    val splitCannonAnim = TextureRegion.split(Assets.manager.get("sprites/plop.png"), 16, 16)
+    val splitCellAnim = TextureRegion.split(Assets.manager.get("sprites/cell.png"), 32, 32)
+
     fun createPlayer(): Entity {
         val body = Play.world.createBody(BodyDef())
         body.type = BodyDef.BodyType.DynamicBody
         body.angularDamping = 10f
 
-        val anim = Animation(0.04f, *TextureRegion.split(Texture("sprites/sperm.png"), 16, 16)[0])
+        val anim = Animation(0.04f, *splitSpermAnim[0])
         anim.playMode = Animation.PlayMode.LOOP
         val sprite = AnimatedSprite(anim)
         sprite.setSize(1f, 1f)
@@ -44,9 +53,9 @@ object EntityCreator {
         val sensor = body.createFixture(shape, 1f)
         shape.dispose()
 
-        val hurtSound = Gdx.audio.newSound(Gdx.files.internal("audio/hurt.wav"))
-        val shootSound = Gdx.audio.newSound(Gdx.files.internal("audio/shoot.wav"))
-        val deathSound = Gdx.audio.newSound(Gdx.files.internal("audio/kill.wav"))
+        val hurtSound = Assets.manager.get("audio/hurt.wav", Sound::class.java)
+        val shootSound = Assets.manager.get("audio/shoot.wav", Sound::class.java)
+        val deathSound = Assets.manager.get("audio/kill.wav", Sound::class.java)
 
         val entity = Entity()
         body.userData = entity
@@ -73,7 +82,7 @@ object EntityCreator {
         val body = Play.world.createBody(BodyDef())
         body.type = BodyDef.BodyType.StaticBody
 
-        val anim = Animation(0.5f, *TextureRegion.split(Texture("sprites/blazeit.png"), 16, 16)[0])
+        val anim = Animation(0.5f, *splitPlantAnim[0])
         anim.playMode = Animation.PlayMode.LOOP
 
         val sprite = AnimatedSprite(anim)
@@ -94,7 +103,7 @@ object EntityCreator {
         val body = Play.world.createBody(BodyDef())
         body.type = BodyDef.BodyType.DynamicBody
 
-        val anim = Animation(0.03f, *TextureRegion.split(Texture("sprites/sperm.png"), 16, 16)[0])
+        val anim = Animation(0.03f, *splitSpermAnim[0])
         anim.playMode = Animation.PlayMode.LOOP
         val sprite = AnimatedSprite(anim)
         sprite.setSize(0.4f, 0.4f)
@@ -122,7 +131,7 @@ object EntityCreator {
         val body = Play.world.createBody(BodyDef())
         body.type = BodyDef.BodyType.DynamicBody
 
-        val sprite = Sprite(Texture("sprites/bullet.png"))
+        val sprite = Sprite(Assets.manager.get("sprites/bullet.png", Texture::class.java))
         sprite.setSize(0.25f, 0.25f)
         sprite.setOriginCenter()
 
@@ -155,7 +164,7 @@ object EntityCreator {
         body.angularVelocity = Math.random().toFloat() * 3
         body.linearDamping = 10f
 
-        val anim = Animation(0.1f, *TextureRegion.split(Texture("sprites/vortex.png"), 32, 32)[0])
+        val anim = Animation(0.1f, *splitVortexAnim[0])
         anim.playMode = Animation.PlayMode.LOOP
 
         val sprite = AnimatedSprite(anim)
@@ -169,7 +178,7 @@ object EntityCreator {
         val fix = body.createFixture(shape, 1f)
         shape.dispose()
 
-        val deathSound = Gdx.audio.newSound(Gdx.files.internal("audio/kill.wav"))
+        val deathSound = Assets.manager.get("audio/kill.wav", Sound::class.java)
 
         val entity = Entity()
         body.userData = entity
@@ -247,7 +256,7 @@ object EntityCreator {
         body.type = BodyDef.BodyType.StaticBody
         body.linearDamping = 1000f
 
-        val sprite = Sprite(Texture("sprites/bosscell.png"))
+        val sprite = Sprite(Assets.manager.get("sprites/bosscell.png", Texture::class.java))
         sprite.setSize(3f, 3f)
         sprite.setOriginCenter()
 
@@ -278,7 +287,7 @@ object EntityCreator {
         body.type = BodyDef.BodyType.DynamicBody
         body.linearDamping = 10f
 
-        val sprite = Sprite(Texture("sprites/bosssegment.png"))
+        val sprite = Sprite(Assets.manager.get("sprites/bosssegment.png", Texture::class.java))
         sprite.setSize(1f, 0.5f)
         sprite.setOriginCenter()
 
@@ -303,7 +312,7 @@ object EntityCreator {
         body.type = BodyDef.BodyType.DynamicBody
         body.linearDamping = 10f
 
-        val anim = Animation(0.15f, *TextureRegion.split(Texture("sprites/smallcannon.png"), 8, 8)[0])
+        val anim = Animation(0.15f, *splitSmallCannonAnim[0])
         anim.playMode = Animation.PlayMode.NORMAL
 
         val sprite = AnimatedSprite(anim)
@@ -326,7 +335,7 @@ object EntityCreator {
         val body = Play.world.createBody(BodyDef())
         body.type = BodyDef.BodyType.StaticBody
 
-        val anim = Animation(0.15f, *TextureRegion.split(Texture("sprites/plop.png"), 16, 16)[0])
+        val anim = Animation(0.15f, *splitCannonAnim[0])
         anim.playMode = Animation.PlayMode.NORMAL
 
         val sprite = AnimatedSprite(anim)
@@ -351,7 +360,7 @@ object EntityCreator {
         body.angularVelocity = Math.random().toFloat() * 2 - 1
         body.linearDamping = 1f
 
-        val anim = Animation(0.15f, *TextureRegion.split(Texture("sprites/cell.png"), 32, 32)[0])
+        val anim = Animation(0.15f, *splitCellAnim[0])
         anim.playMode = Animation.PlayMode.NORMAL
 
         val sprite = AnimatedSprite(anim)
@@ -366,7 +375,7 @@ object EntityCreator {
         shape.dispose()
         val offset = Math.random().toFloat() * 1f
 
-        val deathSound = Gdx.audio.newSound(Gdx.files.internal("audio/kill.wav"))
+        val deathSound = Assets.manager.get("audio/kill.wav", Sound::class.java)
 
         val entity = Entity()
         body.userData = entity
@@ -389,7 +398,7 @@ object EntityCreator {
         val body = Play.world.createBody(BodyDef())
         body.type = BodyDef.BodyType.DynamicBody
 
-        val sprite = Sprite(Texture("sprites/gold.png"))
+        val sprite = Sprite(Assets.manager.get("sprites/gold.png", Texture::class.java))
         sprite.setSize(0.125f, 0.125f)
         sprite.setOriginCenter()
 

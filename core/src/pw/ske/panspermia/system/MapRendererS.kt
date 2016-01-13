@@ -5,9 +5,10 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import pw.ske.panspermia.screen.Play
+import pw.ske.panspermia.util.Assets
 
 object MapRendererS : EntitySystem(999) {
-    val blur = Texture("sprites/blur.png")
+    val blur = Assets.manager.get("sprites/blur.png", Texture::class.java)
 
     override fun update(deltaTime: Float) {
         Play.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)

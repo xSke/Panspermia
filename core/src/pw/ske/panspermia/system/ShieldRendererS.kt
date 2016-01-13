@@ -10,9 +10,10 @@ import pw.ske.panspermia.screen.Play
 import pw.ske.panspermia.component.BodyC
 import pw.ske.panspermia.component.ShieldC
 import pw.ske.panspermia.position
+import pw.ske.panspermia.util.Assets
 
 object ShieldRendererS: IteratingSystem(Family.all(BodyC::class.java, ShieldC::class.java).get(), 1001) {
-    val shield = Texture("sprites/shield.png")
+    val shield = Assets.manager.get("sprites/shield.png", Texture::class.java)
     override fun update(deltaTime: Float) {
         Play.batch.begin()
         super.update(deltaTime)

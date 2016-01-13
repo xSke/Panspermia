@@ -28,6 +28,7 @@ import pw.ske.panspermia.gen.Map
 import pw.ske.panspermia.position
 import pw.ske.panspermia.system.*
 import pw.ske.panspermia.ui.HUDUI
+import pw.ske.panspermia.util.Assets
 import pw.ske.panspermia.util.ContactFilter
 import pw.ske.panspermia.util.ContactListener
 import pw.ske.panspermia.util.Palette
@@ -102,7 +103,7 @@ object Play : ScreenAdapter() {
 
     val fbo = FrameBuffer(Pixmap.Format.RGBA8888, 2048, 2048, false)
 
-    val hueShiftShader = ShaderProgram(Gdx.files.internal("shaders/default.vert"), Gdx.files.internal("shaders/hsv_shift.frag"))
+    val hueShiftShader = ShaderProgram(Assets.manager.get("shaders/default.vert", String::class.java), Assets.manager.get("shaders/hsv_shift.frag", String::class.java))
 
     init {
         if (hueShiftShader.log.length > 0) {
@@ -149,7 +150,7 @@ object Play : ScreenAdapter() {
         HUDUI.act(delta)
         HUDUI.draw()
 
-        Box2DDebugRenderer().render(world, camera.combined)
+        // Box2DDebugRenderer().render(world, camera.combined)
     }
 
     override fun resize(width: Int, height: Int) {
