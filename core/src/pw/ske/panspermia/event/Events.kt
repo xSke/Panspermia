@@ -9,4 +9,5 @@ object Events {
     val Damage = Signal<DamageE>()
     val Death = Signal<DeathE>()
     val ScreenShake = Signal<ScreenShakeE>()
+    val Title = Signal<TitleE>()
 }

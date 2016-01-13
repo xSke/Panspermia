@@ -5,10 +5,14 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.World
+import pw.ske.panspermia.GameState
 import pw.ske.panspermia.Panspermia
+import pw.ske.panspermia.event.Events
+import pw.ske.panspermia.event.TitleE
 import pw.ske.panspermia.gen.LevelGenerator
 import pw.ske.panspermia.gen.Map
 import pw.ske.panspermia.ui.GeneratingUI
+import pw.ske.panspermia.ui.HUDUI
 import pw.ske.panspermia.util.ContactFilter
 import pw.ske.panspermia.util.ContactListener
 import pw.ske.panspermia.util.Palette
@@ -40,7 +44,13 @@ object Generating : ScreenAdapter() {
 
         when (state) {
             State.INIT -> {
+                GameState.level += 1
                 Play.palette = Palette.generate()
+
+                // Load the HUDUI class so the event handler will register itself
+                HUDUI.hashCode()
+
+                Events.Title.dispatch(TitleE(" - Level ${GameState.level} -"))
 
                 state = State.CREATE_WORLD
 

@@ -269,6 +269,7 @@ object EntityCreator {
         val innerShape = CircleShape()
         innerShape.radius = 0.5f
         val innerFix = body.createFixture(innerShape, 1f)
+        innerFix.isSensor = true
         innerShape.dispose()
 
         val entity = Entity()
