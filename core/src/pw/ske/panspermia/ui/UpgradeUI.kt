@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
+import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import pw.ske.panspermia.GameState
 import pw.ske.panspermia.Panspermia
@@ -51,6 +52,7 @@ object UpgradeUI : Stage(ScreenViewport()) {
     init {
         GameState.stats.forEachIndexed { i, it ->
             val label = Label(it.name + " lv." + it.level, Skin, "small")
+            label.setAlignment(Align.center)
 
             val button = TextButton("Upgrade (${it.nextLevelPrice} DNA)", Skin, if (GameState.dna >= it.nextLevelPrice) "blue" else "red").apply {
                 addListener(object : ClickListener(Input.Buttons.LEFT) {
@@ -81,10 +83,11 @@ object UpgradeUI : Stage(ScreenViewport()) {
             group.addActor(label)
             group.space(8f)
             group.addActor(button)
+            group.fill()
 
-            table.add(group).width(300f).center().padBottom(25f)
+            table.add(group).width(300f).center().space(25f)
             if (i == 0) {
-                table.add(dnacount).expandX().top().row()
+                table.add(dnacount).top().space(25f).row()
             } else if (i % 2 == 0) {
                 table.row()
             }
@@ -92,7 +95,7 @@ object UpgradeUI : Stage(ScreenViewport()) {
             buttons.put(it, button)
         }
 
-        table.add(go).colspan(2).expandY().bottom().right().width(100f)
+        table.add(go).colspan(2).expandY().bottom().right().width(100f).space(25f)
     }
 
     override fun act(delta: Float) {
