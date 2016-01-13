@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
@@ -76,13 +77,18 @@ object UpgradeUI : Stage(ScreenViewport()) {
                 })
             }
 
-            table.add(label).center().padBottom(5f)
+            val group = VerticalGroup()
+            group.addActor(label)
+            group.space(8f)
+            group.addActor(button)
+
+            table.add(group).width(300f).center().padBottom(25f)
             if (i == 0) {
-                table.add(dnacount).expandX().right().padBottom(10f).row()
-            } else {
+                table.add(dnacount).expandX().top().row()
+            } else if (i % 2 == 0) {
                 table.row()
             }
-            table.add(button).width(300f).center().padBottom(25f).row()
+
             buttons.put(it, button)
         }
 
