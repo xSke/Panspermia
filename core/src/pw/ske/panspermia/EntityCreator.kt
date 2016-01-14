@@ -303,7 +303,7 @@ object EntityCreator {
         entity.add(BodyC(body))
         entity.add(FilterC(Category.BossShield))
         entity.add(SpriteC(sprite))
-        entity.add(HealthC(1000f))
+        entity.add(HealthC(2000f))
         entity.add(DontClearC())
         return entity
     }

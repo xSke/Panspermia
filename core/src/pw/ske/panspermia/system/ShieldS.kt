@@ -3,6 +3,7 @@ package pw.ske.panspermia.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.gdx.math.DelaunayTriangulator
 import pw.ske.panspermia.screen.Play
 import pw.ske.panspermia.component.BodyC
 import pw.ske.panspermia.component.ShieldC
@@ -21,7 +22,7 @@ object ShieldS : IteratingSystem(Family.all(BodyC::class.java, ShieldC::class.ja
                         Play.engine.removeEntity(it.source)
                     }
 
-                    if (s.hitCounter == s.shieldHits - 1) {
+                    if (s.hitCounter >= s.shieldHits - 1) {
                         s.hitCounter = 0
                         s.enabled = false
                         s.rechargeCounter = 0f

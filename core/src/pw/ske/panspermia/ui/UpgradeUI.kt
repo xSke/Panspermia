@@ -59,7 +59,7 @@ object UpgradeUI : Stage(ScreenViewport()) {
                     override fun clicked(event: InputEvent, x: Float, y: Float) {
                         blip.play()
 
-                        if (GameState.dna >= it.nextLevelPrice || true) {
+                        if (GameState.dna >= it.nextLevelPrice) {
                             GameState.dna -= it.nextLevelPrice
                             it.level++
 

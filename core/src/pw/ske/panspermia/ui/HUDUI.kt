@@ -1,6 +1,5 @@
 package pw.ske.panspermia.ui
 
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.MathUtils
@@ -15,13 +14,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Widget
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import pw.ske.panspermia.GameState
-import pw.ske.panspermia.screen.Play
 import pw.ske.panspermia.component.HealthC
 import pw.ske.panspermia.event.Events
+import pw.ske.panspermia.screen.Play
+import pw.ske.panspermia.util.Assets
 
 object HUDUI : Stage(ScreenViewport()) {
     var counter = 0f
-    val anim = Animation(0.04f, *TextureRegion.split(Texture("sprites/sperm.png"), 16, 16)[0]).apply {
+    val anim = Animation(0.04f, *TextureRegion.split(Assets.manager.get("sprites/sperm.png"), 16, 16)[0]).apply {
         playMode = Animation.PlayMode.LOOP
     }
 
