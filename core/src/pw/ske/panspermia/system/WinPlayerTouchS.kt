@@ -8,6 +8,7 @@ import pw.ske.panspermia.component.WinPlayerTouchC
 import pw.ske.panspermia.event.Events
 import pw.ske.panspermia.screen.Generating
 import pw.ske.panspermia.screen.Play
+import pw.ske.panspermia.ui.UpgradeUI
 
 object WinPlayerTouchS: EntitySystem() {
     init {
@@ -22,6 +23,7 @@ object WinPlayerTouchS: EntitySystem() {
                             GameState.stats.forEach {
                                 it.level = it.startLevel
                             }
+                            UpgradeUI.reconstruct()
                             Panspermia.setScreen(Generating)
                         }
                     }

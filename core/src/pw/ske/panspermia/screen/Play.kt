@@ -32,6 +32,7 @@ import pw.ske.panspermia.util.Assets
 import pw.ske.panspermia.util.ContactFilter
 import pw.ske.panspermia.util.ContactListener
 import pw.ske.panspermia.util.Palette
+import java.util.*
 
 object Play : ScreenAdapter() {
     val engine = Engine().apply {
@@ -117,7 +118,7 @@ object Play : ScreenAdapter() {
         globalSpeed = 1f
         playerDead = false
 
-        engine.entities.forEach {
+        engine.entities.toArrayList().forEach {
             if (it.getComponent(DontClearC::class.java) == null) {
                 engine.removeEntity(it)
             }

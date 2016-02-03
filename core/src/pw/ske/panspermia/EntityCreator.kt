@@ -325,7 +325,7 @@ object EntityCreator {
         entity.add(BodyC(body))
         entity.add(FilterC(Category.BossShield))
         entity.add(SpriteC(sprite))
-        entity.add(AttackPeriodicallyC(2f, 0.15f, Math.random().toFloat() * 2f))
+        entity.add(AttackPeriodicallyC(1.5f, 0.15f, Math.random().toFloat() * 2f))
         entity.add(PlayAnimationOnPreAttackC())
         entity.add(AttackShootProjectileC(10f, listOf(Vector2(0f, 0.5f)), true, false))
         entity.add(DontClearC())

@@ -49,7 +49,10 @@ object UpgradeUI : Stage(ScreenViewport()) {
         UpgradeUI.addActor(this)
     }
 
-    init {
+    fun reconstruct() {
+        buttons.clear()
+        table.clear()
+
         GameState.stats.forEachIndexed { i, it ->
             val label = Label(it.name + " lv." + it.level, Skin, "small")
             label.setAlignment(Align.center)
@@ -96,6 +99,10 @@ object UpgradeUI : Stage(ScreenViewport()) {
         }
 
         table.add(go).colspan(2).expandY().bottom().right().width(100f).space(25f)
+    }
+
+    init {
+        reconstruct()
     }
 
     override fun act(delta: Float) {

@@ -17,8 +17,12 @@ object RandomSpawnCellS: IntervalSystem(1.5f) {
         }
 
         val pos = GridPoint2()
-        while (Play.map.map[pos.x][pos.y]) {
+        while (true) {
             pos.set((Math.random() * Play.map.width).toInt(), (Math.random() * Play.map.height).toInt())
+
+            val dist = Math.pow(pos.x - Play.player.position.x.toDouble(), 2.0) + Math.pow(pos.x - Play.player.position.x.toDouble(), 2.0)
+            if (dist < 20) continue
+            if (!Play.map.map[pos.x][pos.y]) break
         }
         cell.position = Vector2(pos.x.toFloat(), pos.y.toFloat())
 
